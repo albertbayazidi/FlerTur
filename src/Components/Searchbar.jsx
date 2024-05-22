@@ -4,9 +4,20 @@ function SearchBarArea(){
 
     return (
         <div class = 'bg-second'>
-            <div class = 'bg-second p-10 grid justify-items-center grid-cols-3' >
+            <div class = 'bg-second py-8 px-10 grid justify-items-center grid-cols-3' >
                 <div> 
-                    <input class = 'py-2 rounded px-1 text-black focus:outline-none' type='text' placeholder='Fra'/>     
+                    <input class = 'py-2 px-1 rounded text-primary focus:outline-none' type='text' placeholder='Fra' list='cityname'/>
+                    <datalist id='cityname'>
+                        <option value='Oslo S'/>
+                        <option value='Trondheim S'/>
+                        <option value='Lillehammer stasjon'/>
+                        <option value='Stavanger stasjon'/>
+                        <option value='Bergen stasjon'/>
+                        <option value='Lillestrøm stasjon'/>
+                        <option value='Fredrikstad stasjon'/>
+                        <option value='Kristiansand stasjon'/>
+                        <option value='Kongsvinger stasjon'/>
+                    </datalist>   
                 </div>
                 <div>
                     <button type='button' class=' bg-primary  hover:bg-second hover:ring hover:ring-primary rounded text-white p-2'>
@@ -15,16 +26,7 @@ function SearchBarArea(){
                 </div>
 
                 <div >
-                    <input class = 'py-2 rounded px-1 text-black focus:outline-none' type='text' placeholder='Til'/>
-                </div>
-            </div>
-            <div class = 'grid grid-cols-3 justify-items-center'> 
-                <div>
-                    <input class = ' mb-1 py-2 px-1 rounded w-24 focus:outline-none' type = 'text' placeholder='Dato'/>
-                    
-                    <button type='button' class='mb-1 ml-5 p-2  bg-primary hover:bg-second hover:ring hover:ring-primary rounded text-white '>
-                    Søk
-                    </button>
+                    <input class = 'py-2 px-1 rounded text-primary focus:outline-none' type='text' placeholder='Til' list='cityname'/>
                 </div>
             </div>
             <img src='/search_bar_kunst_remix.png'/>
