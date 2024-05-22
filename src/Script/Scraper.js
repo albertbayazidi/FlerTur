@@ -7,7 +7,7 @@ export async function ScrapeData(url) {
 	await page.goto(url);
 
 	// Wait for the page to load
-	await new Promise(resolve => setTimeout(resolve, 7500)); // CHECK HOW THIS DEPENDS ON YOUR INTERNET SPEED
+	await new Promise(resolve => setTimeout(resolve, 8000)); // CHECK HOW THIS DEPENDS ON YOUR INTERNET SPEED
 
 	// Get the element handle
 	const elementHandles = await page.$$('.transit-result-item__footer'); 
@@ -24,13 +24,15 @@ export async function ScrapeData(url) {
 	const split_data = data.map((element) => element.split(' '));
 
 	// get every fourth element in the array
-	const departure_times = split_data.map((element) => element[3]);
+	const prices = split_data.map((element) => element[3]);
+
+	console.log(prices);// ADD A LINE THAT CONVERT TEXT TO ZERO
 
 	// keep only the numbers in the array
-	const array = departure_times.map((element) => element.replace(/[^0-9]/g, ''));
+	const array = prices.map((element) => element.replace(/[^0-9]/g, ''));
 
 	// remove empty strings from the array
-	const numbersArray = array.filter(item => item !== '');
+	const numbersArray = array.map(item => item === '' ? '10000' : item);
 
 	return Math.min.apply(null,numbersArray);
 }
