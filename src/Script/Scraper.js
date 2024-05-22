@@ -19,7 +19,20 @@ export async function ScrapeData(url) {
 
 	// Close the browser
 	await browser.close();
-	return data;
+
+	// Split the data into an array of arrays
+	const split_data = data.map((element) => element.split(' '));
+
+	// get every fourth element in the array
+	const departure_times = split_data.map((element) => element[3]);
+
+	// keep only the numbers in the array
+	const array = departure_times.map((element) => element.replace(/[^0-9]/g, ''));
+
+	// remove empty strings from the array
+	const numbersArray = array.filter(item => item !== '');
+
+	return Math.min.apply(null,numbersArray);
 }
 
 
