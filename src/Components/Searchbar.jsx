@@ -38,6 +38,16 @@ function SearchBarArea() {
             list="cityname"/>
         </div>
       </div>
+      <div class = "grid grid-cols-3 justify-items-center mb-1" >
+        <div>
+          <input type="date" class="rounded px-1 py-2 ml-7 text-primary focus:outline-none" />
+          <button 
+          type = "button"
+          class="rounded bg-primary py-2 px-3 ml-4 text-white hover:bg-second hover:ring hover:ring-primary">
+          Søk 
+          </button>
+        </div>
+      </div>
       <img src="/search_bar_kunst_remix.png" />
     </div>
   );
