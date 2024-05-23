@@ -1,13 +1,28 @@
 import puppeteer from 'puppeteer';
 
+const options = {
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-accelerated-2d-canvas',
+      '--no-first-run',
+      '--no-zygote',
+      '--single-process',
+      '--disable-gpu'
+    ],
+    headless: true
+  }
+
 export async function ScrapeData(url) {
 
-	const browser = await puppeteer.launch();
+	const browser = await puppeteer.launch(options);
 	const page = await browser.newPage();
+	await page.setDefaultNavigationTimeout(0);
 	await page.goto(url);
 
 	// Wait for the page to load
-	await new Promise(resolve => setTimeout(resolve, 8000)); // CHECK HOW THIS DEPENDS ON YOUR INTERNET SPEED
+	await new Promise(resolve => setTimeout(resolve, 10000)); // CHECK HOW THIS DEPENDS ON YOUR INTERNET SPEED
 
 	// Get the element handle
 	const elementHandles = await page.$$('.transit-result-item__footer'); 
@@ -25,11 +40,16 @@ export async function ScrapeData(url) {
 
 	// get every fourth element in the array
 	const prices = split_data.map((element) => element[3]);
-
-	console.log(prices);// ADD A LINE THAT CONVERT TEXT TO ZERO
+	//console.log(prices);
 
 	// keep only the numbers in the array
-	const array = prices.map((element) => element.replace(/[^0-9]/g, ''));
+	const array = prices.map((element) => {
+		if (element) {
+			return element.replace(/[^0-9]/g, '');
+		} else {
+			return ''; // or any default value you want to assign when element is undefined
+		}
+	});
 
 	// remove empty strings from the array
 	const numbersArray = array.map(item => item === '' ? '10000' : item);
