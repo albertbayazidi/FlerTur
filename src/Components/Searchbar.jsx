@@ -1,54 +1,70 @@
+import { useState } from "react";
 import "../App.css";
 
 function SearchBarArea() {
+  const [date, setDate] = useState(""); // state to store the date
+
   return (
-    <div class="bg-second">
-      <div class="grid grid-cols-3 justify-items-center bg-second px-10 py-8">
-        <div>
-          <input
-            class="rounded px-1 py-2 text-primary focus:outline-none"
-            type="text"
-            placeholder="Fra"
-            list="cityname"/>
-          <datalist id="cityname">
-            <option value="Oslo S" />
-            <option value="Trondheim S" />
-            <option value="Lillehammer stasjon" />
-            <option value="Stavanger stasjon" />
-            <option value="Bergen stasjon" />
-            <option value="Lillestrøm stasjon" />
-            <option value="Fredrikstad stasjon" />
-            <option value="Kristiansand stasjon" />
-            <option value="Kongsvinger stasjon" />
-          </datalist>
-        </div>
-        <div>
+    <div className="bg-second">
+      <div className="mx-4 grid gap-4 py-6 sm:mx-10 sm:grid-cols-3 sm:items-center">
+        <input
+          className="w-full rounded px-3 py-3 text-primary focus:outline-none"
+          type="text"
+          placeholder="Fra"
+          list="cityname"
+        />
+
+        <button
+          type="button"
+          className="w-full rounded bg-primary py-3 text-white hover:bg-second hover:ring hover:ring-primary sm:w-auto"
+        >
+          Bytt retning
+        </button>
+
+        <input
+          className="w-full rounded px-3 py-3 text-primary focus:outline-none"
+          type="text"
+          placeholder="Til"
+          list="cityname"
+        />
+      </div>
+
+      <div className="mx-4 grid gap-4 pb-4 sm:mx-10 sm:grid-cols-3 sm:items-center">
+        <input
+          type="date"
+          className="w-full rounded px-3 py-3 text-primary focus:outline-none"
+          value={date}
+          onChange={(e) => setDate(e.target.value)} // update state when user selects a date
+        />
+
+        <div className="sm:col-span-2">
           <button
             type="button"
-            class=" rounded  bg-primary p-2 text-white hover:bg-second hover:ring hover:ring-primary">
-            Bytt retning
+            className="w-full rounded bg-primary py-3 text-white hover:bg-second hover:ring hover:ring-primary"
+            onClick={() => console.log(date)} // print the selected date
+          >
+            Søk
           </button>
         </div>
+      </div>
 
-        <div>
-          <input
-            class="rounded px-1 py-2 text-primary focus:outline-none"
-            type="text"
-            placeholder="Til"
-            list="cityname"/>
-        </div>
-      </div>
-      <div class = "grid grid-cols-3 justify-items-center mb-1" >
-        <div>
-          <input type="date" class="rounded px-1 py-2 ml-7 text-primary focus:outline-none" />
-          <button 
-          type = "button"
-          class="rounded bg-primary py-2 px-3 ml-4 text-white hover:bg-second hover:ring hover:ring-primary">
-          Søk 
-          </button>
-        </div>
-      </div>
-      <img src="/search_bar_kunst_remix.png" />
+      <datalist id="cityname">
+        <option value="Oslo%20S" />
+        <option value="Trondheim%20S" />
+        <option value="Lillehammer%20stasjon" />
+        <option value="Stavanger%20stasjon" />
+        <option value="Bergen%20stasjon" />
+        <option value="Lillestrøm%20stasjon" />
+        <option value="Fredrikstad%20stasjon" />
+        <option value="Kristiansand%20stasjon" />
+        <option value="Kongsvinger%20stasjon" />
+      </datalist>
+
+      <img
+        src="/search_bar_kunst_remix.png"
+        className="w-full object-contain"
+        alt=""
+      />
     </div>
   );
 }

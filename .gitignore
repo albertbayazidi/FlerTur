@@ -7,19 +7,20 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Node / Bun
 node_modules
 dist
 dist-ssr
 *.local
+bun.lock
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-*.xcf
+# Go
+/backend/bin/
+/backend/*.exe
+/backend/*.out
+/backend/*.test
+/backend/vendor/
+
+# Temporary files
+*.tmp
+*.cache

@@ -5,10 +5,15 @@ import Info from "./Components/info.jsx";
 
 function App() {
   return (
-    <div>
+    <div className="flex min-h-screen flex-col">
       <Navbar />
       <SearchBarArea />
       <Info />
+      <img
+        src="/footer_art.png"
+        className="mt-auto h-auto w-auto md:h-auto md:w-full object-contain"
+        alt=""
+      />
     </div>
   );
 }
