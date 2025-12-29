@@ -30,14 +30,13 @@ var store []ScrapeResult
 var mu sync.Mutex 
 
 func main() {
-	date := "2025-12-30"
+	date := "2026-01-06"
 
 	url, err := constructUrl(date,"Oslo%20S","Lillehammer%20stasjon")
     if err != nil {
         fmt.Println("Error:", err)
         return
     }
-	fmt.Println(url)
 
 	scraper(url)
 }
