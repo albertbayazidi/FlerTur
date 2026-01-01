@@ -38,9 +38,7 @@ func pressButton(button *rod.Element, page *rod.Page) bool {
 	return false
 }
 
-func scraper(url string) {
-	browser := rod.New().MustConnect()
-	page := browser.MustPage(url)
+func scraper(page *rod.Page) {
 	page.MustWaitStable()
 
 	button := page.MustElement(buttonSelector)
@@ -52,8 +50,6 @@ func scraper(url string) {
 			break
 		}
 	}
-
-	fmt.Println("finished")
-	time.Sleep(time.Hour)
+	fmt.Println("finished page")
 }
 

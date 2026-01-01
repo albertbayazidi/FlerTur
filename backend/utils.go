@@ -6,20 +6,26 @@ import (
 	"strconv"
 )
 
-func parseDateToUnix(dateStr string) (int64) {
+type urlAndMetaData struct {
+	date time.Time
+	stationLatLonPair string
+	url string
+}
+
+var metaDataLeft = "https://entur.no/reiseresultater?transportModes=rail%2Ctram%2Cbus%2Ccoach%2Cwater%2Ccar_ferry%2Cmetro%2Cflytog%2Cflybuss"
+var metaDataRight ="&tripMode=oneway&walkSpeed=1.3&minimumTransferTime=120&timepickerMode=departAfter"
+
+func parseDateToTime(dateStr string) (time.Time) {
 	layout := "2006-01-02"
 
 	unixTime, _ := time.Parse(layout, dateStr)
 	unixTime = time.Date(unixTime.Year(), unixTime.Month(), unixTime.Day(), 0, 0, 0, 0, unixTime.Location())
 
-	return unixTime.UnixMilli()
+	return unixTime
 }
 
-func metaDataify(dateStr string) string {
-	metaDataLeft := "https://entur.no/reiseresultater?transportModes=rail%2Ctram%2Cbus%2Ccoach%2Cwater%2Ccar_ferry%2Cmetro%2Cflytog%2Cflybuss"
-	metaDataRight :="&tripMode=oneway&walkSpeed=1.3&minimumTransferTime=120&timepickerMode=departAfter"
-
-	return metaDataLeft + "&date=" + dateStr + metaDataRight 
+func metaDataify(date time.Time) string {
+	return metaDataLeft + "&date=" + strconv.FormatInt(date.UnixMilli(),10) + metaDataRight 
 }
 
 func checkStation(station string, sendState string) (string, error) {
@@ -35,22 +41,26 @@ func checkStation(station string, sendState string) (string, error) {
 	return stationLatLonPair, nil
 }
 
-func constructUrl(date string, start string, stop string) (string, error) {
-	unixTime := parseDateToUnix(date)
-	baseURL := metaDataify(strconv.FormatInt(unixTime, 10))
+func updateUrl(url *urlAndMetaData){
+	url.date = url.date.AddDate(0,0,1)
+	baseURL := metaDataify(url.date)
+	url.url = baseURL + url.stationLatLonPair
+
+}
+
+func constructUrl(date string, start string, stop string) (urlAndMetaData, error) {
+	timeTime := parseDateToTime(date)
+	baseURL := metaDataify(timeTime)
+	url := urlAndMetaData{date: timeTime}
 	
 	startLatLongPair, err := checkStation(start, "start")
-	if err != nil {
-			return "", err
-	}
 
 	endLatLongPair, err := checkStation(stop, "stop")
-	if err != nil {
-			return "", err
-	}
 
-	url := baseURL + startLatLongPair + endLatLongPair
-	return url, nil
+	url.stationLatLonPair= startLatLongPair + endLatLongPair 
+	url.url = baseURL + startLatLongPair + endLatLongPair
+
+	return url, err
 }
 
 
