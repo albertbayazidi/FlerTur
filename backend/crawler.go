@@ -7,6 +7,9 @@ import (
 	"github.com/go-rod/rod"
 )
 
+var newDayHeaderSelector = "#main-content > div > section.travel-result__content__transit > div > div:nth-child(2) > h3 > span" 
+var buttonSelector = "#main-content > div > section.travel-result__content__transit > button" 
+
 func captureLiElement(page *rod.Page) (rod.Elements) {
 	ulElements := page.MustElement("#main-content > div > section.travel-result__content__transit > div > div > ul")   
 	liElements := ulElements.MustElements("li")
@@ -14,39 +17,43 @@ func captureLiElement(page *rod.Page) (rod.Elements) {
 	return liElements
 }
 
-func pressButton(button *rod.Element, page *rod.Page) {
+func pressButton(button *rod.Element, page *rod.Page) bool {
 	i := 0
-	liElemets := captureLiElement(page)
-	nrElemets := len(liElemets)
+	liElements := captureLiElement(page)
+	nrElements := len(liElements)
 
-	for nrElemets >= len(liElemets){
-		liElemets = captureLiElement(page)
-		time.Sleep(500*time.Millisecond)
+	for nrElements >= len(liElements) {
+		liElements = captureLiElement(page)
+		time.Sleep(250 * time.Millisecond)
+
+		if page.MustHas(newDayHeaderSelector) {
+			return true
+		}
+
 		i++
 		fmt.Println(i)
-	} 
+	}
+
 	button.MustClick()
+	return false
 }
 
 func scraper(url string) {
-	broswer := rod.New().MustConnect()
-	page := broswer.MustPage(url)
+	browser := rod.New().MustConnect()
+	page := browser.MustPage(url)
 	page.MustWaitStable()
-	
-	button := page.MustElement("#main-content > div > section.travel-result__content__transit > button")  
-	
+
+	button := page.MustElement(buttonSelector)
 	button.MustClick()
 
 	for {
-		pressButton(button, page)
-
-		if page.MustHas("#main-content > div > section.travel-result__content__transit > div > div:nth-child(2) > h3 > span") {
-
+		shouldStop := pressButton(button, page)
+		if shouldStop {
 			break
 		}
-	}	
-	fmt.Println("finished")
+	}
 
+	fmt.Println("finished")
 	time.Sleep(time.Hour)
 }
 
