@@ -8,6 +8,8 @@
 [Fler TUR](https://bayazidi.xyz/) er en nettjeneste som prøver å finne de billigste billettprisene en måned fram i tid.
 Verdiene som blir framstilt kan avvike litt. 
 
+![web_page](public/page.png)
+
 ## Hvordan funker Fler Tur
 Fler TUR henter automatisk inn reiseinformasjon fra EnTUR ved å sjekke ulike kombinasjoner av stasjoner. Dataene samles inn fortløpende og lagres, slik at de er tilgjengelige for brukerne uten at de selv trenger å gjøre noe.
 
@@ -23,6 +25,4 @@ cd FlerTur
 npm/bun i
 npm/bun run dev
 ```
-
-<img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174" />
 
