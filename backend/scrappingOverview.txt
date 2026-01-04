@@ -1,0 +1,18 @@
+Bergen stasjon, Fredrikstad stasjon  
+Bergen stasjon, Kristiansand stasjon 
+
+Fredrikstad stasjon, Kristiansand stasjon 
+
+Oslo S, Bergen stasjon     
+Oslo S, Fredrikstad stasjon 
+Oslo S, Kristiansand stasjon 
+Oslo S, Stavanger stasjon  
+Oslo S, Trondheim S 
+
+Stavanger stasjon, Bergen stasjon 
+Stavanger stasjon, Fredrikstad stasjon 
+Stavanger stasjon, Kristiansand stasjon 
+
+Trondheim S, Fredrikstad stasjon 
+Trondheim S, Kristiansand stasjon 
+

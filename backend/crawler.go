@@ -10,20 +10,20 @@ import (
 var newDayHeaderSelector = "#main-content > div > section.travel-result__content__transit > div > div:nth-child(2) > h3 > span" 
 var buttonSelector = "#main-content > div > section.travel-result__content__transit > button" 
 
-func captureLiElement(page *rod.Page) (rod.Elements) {
+func captureLiElements(page *rod.Page) (rod.Elements) {
 	ulElements := page.MustElement("#main-content > div > section.travel-result__content__transit > div > div > ul")   
-	liElements := ulElements.MustElements("li")
+	liElements := ulElements.MustElements("li.transit-result-item")
 
 	return liElements
 }
 
 func pressButton(button *rod.Element, page *rod.Page) bool {
 	i := 0
-	liElements := captureLiElement(page)
+	liElements := captureLiElements(page)
 	nrElements := len(liElements)
 
 	for nrElements >= len(liElements) {
-		liElements = captureLiElement(page)
+		liElements = captureLiElements(page)
 		time.Sleep(250 * time.Millisecond)
 
 		if page.MustHas(newDayHeaderSelector) {
@@ -38,7 +38,7 @@ func pressButton(button *rod.Element, page *rod.Page) bool {
 	return false
 }
 
-func scraper(page *rod.Page) {
+func crawler(page *rod.Page) {
 	page.MustWaitStable()
 
 	button := page.MustElement(buttonSelector)
