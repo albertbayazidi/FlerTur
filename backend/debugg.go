@@ -6,12 +6,12 @@ import (
 
 func printPageData(data *pageData) {
 	fmt.Println("===== pageData =====")
-	fmt.Println("Duration:        ", data.duration)
-	fmt.Println("Start Time:      ", data.startTime)
-	fmt.Println("Price:           ", data.price)
-	fmt.Println("Number of Trains:", data.numberOfTrains)
-	fmt.Println("Url:             ", data.url)
-	fmt.Println("RetrievalTime   :", data.retrievalTime)
+	fmt.Println("Duration:        ", data.Duration)
+	fmt.Println("Start Time:      ", data.StartTime)
+	fmt.Println("Price:           ", data.Price)
+	fmt.Println("Number of Trains:", data.NumberOfTrains)
+	fmt.Println("Url:             ", data.URL)
+	fmt.Println("RetrievalTime   :", data.RetrievalTime)
 
 	fmt.Println("Train IDs:")
 	for i, id := range data.TrainIds {

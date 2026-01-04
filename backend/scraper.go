@@ -10,13 +10,13 @@ import (
 )
 
 type pageData struct {
-	duration string
-	startTime string
-	price int
-	numberOfTrains int
-	TrainIds []string
-	url string
-	retrievalTime time.Time
+	Duration string					`msgpack:"duration"` 
+	StartTime string				`msgpack:"startTime"`	
+	Price int 							`msgpack:"price"` 
+	NumberOfTrains int     	`msgpack:"numberOfTrains"` 
+	TrainIds []string				`msgpack:"trainIds"`
+	URL           string    `msgpack:"url"`
+	RetrievalTime time.Time `msgpack:"retrievalTime"`
 }
 
 const maxNumberOfTrains = 10
@@ -49,7 +49,7 @@ func captureTrainId(travelSuggestion *rod.Element, data *pageData) {
 			}
 		}
 	}	
-	data.numberOfTrains = count
+	data.NumberOfTrains = count
 	data.TrainIds = trainIdArray[:count]
 }
 
@@ -72,9 +72,9 @@ func captureData(travelSuggestion *rod.Element) pageData {
 	startTime ,_ := travelSuggestion.MustElement(startTimeSelector).Text()
 	priceString, _ := travelSuggestion.MustElement(priceSelector).Text()
 	
-	data := pageData{duration: duration}
-	data.startTime = startTime
-	data.price = capturePrice(priceString)
+	data := pageData{Duration: duration}
+	data.StartTime = startTime
+	data.Price = capturePrice(priceString)
 	captureTrainId(travelSuggestion, &data)
 	return data
 }
@@ -84,7 +84,7 @@ func captureUrl(page *rod.Page, travelSuggestions rod.Elements, currentCheapestT
 	return page.MustInfo().URL
 }
 
-func scraper(page *rod.Page){
+func scraper(page *rod.Page) pageData{
 	travelSuggestions := captureLiElements(page)
 	currentCheapestTicketIndex := 0
 	currentCheapestTicket := 9999999
@@ -92,16 +92,16 @@ func scraper(page *rod.Page){
 	for index, travelSuggestion := range travelSuggestions{
 		data := captureData(travelSuggestion)
 
-		if data.price < currentCheapestTicket{
-			currentCheapestTicket = data.price 
+		if data.Price < currentCheapestTicket{
+			currentCheapestTicket = data.Price 
 			currentCheapestTicketIndex = index
 		} 
 	}
 	
 	data := captureData(travelSuggestions[currentCheapestTicketIndex])
-	data.url = captureUrl(page,travelSuggestions,currentCheapestTicketIndex)
-	data.retrievalTime = time.Now()
-	printPageData(&data)
+	data.URL = captureUrl(page,travelSuggestions,currentCheapestTicketIndex)
+	data.RetrievalTime = time.Now()
 
+	return data
 }
 

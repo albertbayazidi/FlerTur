@@ -1,6 +1,6 @@
 # TASKS
-- 
 - Add saving function (JSON or binary, something easy to save and retrieve)
+    - Should add start and end stasions when saving
 - Add cron job
     - Could be nice to have cronjob changes automatily retrived from repo.
 - Add frontend interaction with a table of prices and dates, (could be sent to the user with the page)

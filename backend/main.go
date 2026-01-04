@@ -16,16 +16,7 @@ var stationMap = map[string][]string{
 		"Kristiansand stasjon":  {"58.14559","7.988067"},
     }
 
-type ScrapeResult struct {
-    URL       string `json:"url"`
-    Start     string `json:"start"`
-    End       string `json:"end"`
-    Date      string `json:"date"`
-    Price     string `json:"price"`
-    Time      string `json:"time"`
-}
-
-var store []ScrapeResult
+var pageDataResults []pageData 
 var mu sync.Mutex 
 
 func main() {
@@ -35,7 +26,7 @@ func main() {
 	currentDay := 0
 	maxDay := 0 // keep at 0 for testing
 
-	url, err := constructUrl(date,"Trondheim S","Kongsvinger stasjon")
+	url, err := constructUrl(date,"Trondheim S","Oslo S")
     if err != nil {
         fmt.Println("Error:", err)
         return
@@ -53,8 +44,15 @@ func main() {
 	for _, currentPage := range pageList {
 		currentPage.Activate()
 		crawler(currentPage)
-		scraper(currentPage)
+		pageDataResults = append(pageDataResults, scraper(currentPage))
 	}
-	time.Sleep(time.Hour)
 
+	SavePageData("data/pageData.msgpack", pageDataResults)
+	loaded, _ := LoadPageData("data/pageData.msgpack")
+
+	for _, pageDataResult := range loaded {
+		printPageData(&pageDataResult)
+	}
+
+	time.Sleep(time.Hour)
 }

@@ -1,18 +1,24 @@
 Bergen stasjon, Fredrikstad stasjon  
 Bergen stasjon, Kristiansand stasjon 
+Bergen stasjon, Asker stasjon
 
 Fredrikstad stasjon, Kristiansand stasjon 
+Fredrikstad Stasjon, Asker stasjon
 
 Oslo S, Bergen stasjon     
 Oslo S, Fredrikstad stasjon 
 Oslo S, Kristiansand stasjon 
 Oslo S, Stavanger stasjon  
 Oslo S, Trondheim S 
+Oslo S, Asker stasjon
 
 Stavanger stasjon, Bergen stasjon 
 Stavanger stasjon, Fredrikstad stasjon 
 Stavanger stasjon, Kristiansand stasjon 
+Stavanger stasjon, Asker stasjon
 
 Trondheim S, Fredrikstad stasjon 
 Trondheim S, Kristiansand stasjon 
+Trondheim S, Asker stasjon
+Trondheim S, Arendal stasjon
 
