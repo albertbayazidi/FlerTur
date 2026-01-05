@@ -1,4 +1,4 @@
-package main
+package rod_utils
 
 import (
 	"fmt"
@@ -38,7 +38,7 @@ func pressButton(button *rod.Element, page *rod.Page) bool {
 	return false
 }
 
-func crawler(page *rod.Page) {
+func Crawler(page *rod.Page) {
 	page.MustWaitStable()
 
 	button := page.MustElement(buttonSelector)

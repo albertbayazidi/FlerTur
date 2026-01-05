@@ -1,31 +1,42 @@
 package main
 
 import (
-	"os"
-
-	"github.com/vmihailenco/msgpack/v5"
+    "encoding/json"
+		"time"
+    "os"
+		"backend/rod_utils"
 )
 
-func SavePageData(filename string, records []pageData) error {
-	file, err := os.Create(filename)
-	if err != nil {
-		return err
-	}
-	defer file.Close()
-
-	encoder := msgpack.NewEncoder(file)
-	return encoder.Encode(records)
+type PageDataWrapper struct {
+    StartStation       	string								`json:"startStation"`
+    EndStation      		string    						`json:"endStation"`
+    PageDataResults     []rod_utils.PageData  `json:"pageDataResults"`
+    RetrievalTime  			time.Time 						`json:"retrievalTime"`
 }
 
-func LoadPageData(filename string) ([]pageData, error) {
-	file, err := os.Open(filename)
-	if err != nil {
-		return nil, err
-	}
-	defer file.Close()
+func SavePageData(filename string, records []rod_utils.PageData) error {
+    file, err := os.Create(filename)
+    if err != nil {
+        return err
+    }
+    defer file.Close()
 
-	var records []pageData
-	decoder := msgpack.NewDecoder(file)
-	err = decoder.Decode(&records)
-	return records, err
+    encoder := json.NewEncoder(file)
+    
+    encoder.SetIndent("", "  ") 
+    
+    return encoder.Encode(records)
+}
+
+func LoadPageData(filename string) ([]rod_utils.PageData, error) {
+    file, err := os.Open(filename)
+    if err != nil {
+        return nil, err
+    }
+    defer file.Close()
+
+    var records []rod_utils.PageData
+    decoder := json.NewDecoder(file)
+    err = decoder.Decode(&records)
+    return records, err
 }

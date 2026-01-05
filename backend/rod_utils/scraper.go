@@ -1,23 +1,22 @@
-package main
+package rod_utils
 
 import (
 	"strings"
 	"regexp"
 	"strconv"
-	"time"
 
 	"github.com/go-rod/rod"
 )
 
-type pageData struct {
-	Duration string					`msgpack:"duration"` 
-	StartTime string				`msgpack:"startTime"`	
-	Price int 							`msgpack:"price"` 
-	NumberOfTrains int     	`msgpack:"numberOfTrains"` 
-	TrainIds []string				`msgpack:"trainIds"`
-	URL           string    `msgpack:"url"`
-	RetrievalTime time.Time `msgpack:"retrievalTime"`
+type PageData struct {
+    Duration       string    `json:"duration"`
+    StartTime      string    `json:"startTime"`
+    Price          int       `json:"price"`
+    NumberOfTrains int       `json:"numberOfTrains"`
+    TrainIds       []string  `json:"trainIds"`
+    URL            string    `json:"url"`
 }
+
 
 const maxNumberOfTrains = 10
 
@@ -31,7 +30,7 @@ var trainIdContainerSelector = "div.transit-result-item__content > div > div.leg
 
 var idSelector = "div.legs-list__leg__details > div.travel-tag > span.travel-tag__label"
 
-func captureTrainId(travelSuggestion *rod.Element, data *pageData) {
+func captureTrainId(travelSuggestion *rod.Element, data *PageData) {
 	count := 0
 	var trainIdArray [maxNumberOfTrains]string
 	trainIdContainer := travelSuggestion.MustElements(trainIdContainerSelector)
@@ -67,12 +66,12 @@ func capturePrice(priceString string) int{
 	return price
 }
 
-func captureData(travelSuggestion *rod.Element) pageData {
+func captureData(travelSuggestion *rod.Element) PageData {
 	duration, _ := travelSuggestion.MustElement(durationSelector).Text()
 	startTime ,_ := travelSuggestion.MustElement(startTimeSelector).Text()
 	priceString, _ := travelSuggestion.MustElement(priceSelector).Text()
 	
-	data := pageData{Duration: duration}
+	data := PageData{Duration: duration}
 	data.StartTime = startTime
 	data.Price = capturePrice(priceString)
 	captureTrainId(travelSuggestion, &data)
@@ -84,7 +83,7 @@ func captureUrl(page *rod.Page, travelSuggestions rod.Elements, currentCheapestT
 	return page.MustInfo().URL
 }
 
-func scraper(page *rod.Page) pageData{
+func Scraper(page *rod.Page) PageData {
 	travelSuggestions := captureLiElements(page)
 	currentCheapestTicketIndex := 0
 	currentCheapestTicket := 9999999
@@ -100,7 +99,6 @@ func scraper(page *rod.Page) pageData{
 	
 	data := captureData(travelSuggestions[currentCheapestTicketIndex])
 	data.URL = captureUrl(page,travelSuggestions,currentCheapestTicketIndex)
-	data.RetrievalTime = time.Now()
 
 	return data
 }

@@ -5,6 +5,8 @@ import (
 	"sync"
 	"fmt"
 	"github.com/go-rod/rod"
+	"os"
+	"backend/rod_utils"
 )
 
 var stationMap = map[string][]string{
@@ -16,17 +18,21 @@ var stationMap = map[string][]string{
 		"Kristiansand stasjon":  {"58.14559","7.988067"},
     }
 
-var pageDataResults []pageData 
+var pageDataResults []rod_utils.PageData 
 var mu sync.Mutex 
+var maxDay = 1  // keep at low for testing 
 
 func main() {
-	date := "2026-01-06" // should be an input read from browser
-	browser := rod.New().MustConnect()
-	
-	currentDay := 0
-	maxDay := 0 // keep at 0 for testing
+	startStation := os.Args[1]
+	endStation := os.Args[2] 
 
-	url, err := constructUrl(date,"Trondheim S","Oslo S")
+	now := time.Now()
+	currentDate := now.Format("2006-01-02")
+
+	browser := rod.New().MustConnect()
+	currentDay := 0
+
+	url, err := constructUrl(currentDate, startStation, endStation)
     if err != nil {
         fmt.Println("Error:", err)
         return
@@ -43,16 +49,24 @@ func main() {
 	pageList, _ := browser.Pages()
 	for _, currentPage := range pageList {
 		currentPage.Activate()
-		crawler(currentPage)
-		pageDataResults = append(pageDataResults, scraper(currentPage))
+		rod_utils.Crawler(currentPage)
+		pageDataResults = append(pageDataResults, rod_utils.Scraper(currentPage))
 	}
 
-	SavePageData("data/pageData.msgpack", pageDataResults)
-	loaded, _ := LoadPageData("data/pageData.msgpack")
+	wrapper := PageDataWrapper{StartStation: startStation,
+																						EndStation: endStation,
+																						RetrievalTime: time.Now(),
+																						PageDataResults: pageDataResults}
+	PrintPageDataWrapper(wrapper)
+
+	/*
+	SavePageData("../public/pageData.json", wrappedPageDataResults)
+	loaded, _ := LoadPageData("../public/pageData.json")
 
 	for _, pageDataResult := range loaded {
 		printPageData(&pageDataResult)
 	}
+	*/
 
 	time.Sleep(time.Hour)
 }
