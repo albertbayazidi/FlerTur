@@ -8,14 +8,15 @@ import (
 	"backend/rod_utils"
 )
 
-var pageDataResults []rod_utils.PageData 
 var mu sync.Mutex 
-var maxDay = 5  // keep at low for testing 
-var maxStaions = 5 // keep at low for testing  
+var maxDay = 2  // keep at low for testing 
+var maxStaions = 2 // keep at low for testing  
 
 func mainProsses(startStation string, endStation string, currentDate string) PageDataWrapper{
 	browser := rod.New().MustConnect()
 	defer browser.MustClose() 	
+	
+	var pageDataResults []rod_utils.PageData 
 
 	currentDay := 0
 	url, _ := constructUrl(currentDate, startStation, endStation)
@@ -44,7 +45,8 @@ func mainProsses(startStation string, endStation string, currentDate string) Pag
 func main() {
 	var allResults []PageDataWrapper
 	now := time.Now()
-	currentDate := now.Format("2006-01-02")
+	tomorrow := now.AddDate(0, 0, 1)
+	currentDate := tomorrow.Format("2006-01-02")
 
 	start := time.Now()
 	for index, route := range routes {
