@@ -26,3 +26,12 @@ npm/bun i
 npm/bun run dev
 ```
 
+## DEV
+
+For å sette up tjenesten lokalt bruk man følgende koomandoene.
+
+```bash
+docker compose --profile manual_seed up # seeder databasen, bruk flaget -- profile kun første gangen.
+bun run web_backend/sever.ts
+bun run dev
+```
