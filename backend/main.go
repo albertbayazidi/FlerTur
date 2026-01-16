@@ -3,42 +3,22 @@ package main
 import (
 	"time"
 	"sync"
-	"fmt"
 	"github.com/go-rod/rod"
-	"os"
+	"fmt"
 	"backend/rod_utils"
 )
 
-var stationMap = map[string][]string{
-		"Oslo S":                {"59.910357","10.753051"},
-		"Trondheim S":           {"63.436279","10.399123"},
-		"Stavanger stasjon":     {"58.966568","5.732616"},
-		"Bergen stasjon":        {"60.390434","5.333511"},
-		"Fredrikstad stasjon":   {"59.208805","10.950282"},
-		"Kristiansand stasjon":  {"58.14559","7.988067"},
-    }
-
 var pageDataResults []rod_utils.PageData 
 var mu sync.Mutex 
-var maxDay = 1  // keep at low for testing 
+var maxDay = 5  // keep at low for testing 
+var maxStaions = 5 // keep at low for testing  
 
-func main() {
-	startStation := os.Args[1]
-	endStation := os.Args[2] 
-
-	now := time.Now()
-	currentDate := now.Format("2006-01-02")
-
+func mainProsses(startStation string, endStation string, currentDate string) PageDataWrapper{
 	browser := rod.New().MustConnect()
-	currentDay := 0
+	defer browser.MustClose() 	
 
-	url, err := constructUrl(currentDate, startStation, endStation)
-    if err != nil {
-        fmt.Println("Error:", err)
-        return
-    }
-	
-	browser = rod.New().MustConnect()
+	currentDay := 0
+	url, _ := constructUrl(currentDate, startStation, endStation)
 	for currentDay <=  maxDay {
 		_ = browser.MustPage(url.url)
 		updateUrl(&url)
@@ -47,7 +27,8 @@ func main() {
 
 	currentDay = 0
 	pageList, _ := browser.Pages()
-	for _, currentPage := range pageList {
+	for index, currentPage := range pageList {
+		fmt.Println("CurrentPageNr", index)
 		currentPage.Activate()
 		rod_utils.Crawler(currentPage)
 		pageDataResults = append(pageDataResults, rod_utils.Scraper(currentPage))
@@ -57,8 +38,38 @@ func main() {
 																						EndStation: endStation,
 																						RetrievalTime: time.Now(),
 																						PageDataResults: pageDataResults}
-	PrintPageDataWrapper(wrapper)
+	return wrapper
+}
 
+func main() {
+	var allResults []PageDataWrapper
+	now := time.Now()
+	currentDate := now.Format("2006-01-02")
+
+	start := time.Now()
+	for index, route := range routes {
+		fmt.Println("CurrentRouteNr", index)
+		result1 := mainProsses(route.Start, route.End, currentDate)
+		allResults = append(allResults, result1)
+
+		time.Sleep(time.Second) 
+
+		result2 := mainProsses(route.End, route.Start, currentDate)
+		allResults = append(allResults, result2)
+		
+		time.Sleep(time.Second)
+
+		if index == maxStaions {
+			break
+		}
+	}
+	elapsed := time.Since(start) 
+
+	// DEBUGGING ONLY
+	for _,result := range allResults {
+		PrintPageDataWrapper(result)
+	}
+	fmt.Printf("Code block took %s\n", elapsed)
 	/*
 	SavePageData("../public/pageData.json", wrappedPageDataResults)
 	loaded, _ := LoadPageData("../public/pageData.json")

@@ -1,7 +1,6 @@
 package rod_utils
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/go-rod/rod"
@@ -31,7 +30,6 @@ func pressButton(button *rod.Element, page *rod.Page) bool {
 		}
 
 		i++
-		fmt.Println(i)
 	}
 
 	button.MustClick()
@@ -39,7 +37,7 @@ func pressButton(button *rod.Element, page *rod.Page) bool {
 }
 
 func Crawler(page *rod.Page) {
-	page.MustWaitStable()
+	page.Timeout(15*time.Second).WaitStable(1*time.Second)
 
 	button := page.MustElement(buttonSelector)
 	button.MustClick()
@@ -50,6 +48,5 @@ func Crawler(page *rod.Page) {
 			break
 		}
 	}
-	fmt.Println("finished page")
 }
 

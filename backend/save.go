@@ -14,7 +14,7 @@ type PageDataWrapper struct {
     RetrievalTime  			time.Time 						`json:"retrievalTime"`
 }
 
-func SavePageData(filename string, records []rod_utils.PageData) error {
+func SavePageData(filename string, records []PageDataWrapper) error {
     file, err := os.Create(filename)
     if err != nil {
         return err
@@ -28,15 +28,16 @@ func SavePageData(filename string, records []rod_utils.PageData) error {
     return encoder.Encode(records)
 }
 
-func LoadPageData(filename string) ([]rod_utils.PageData, error) {
+func LoadPageData(filename string) ([]PageDataWrapper, error) {
     file, err := os.Open(filename)
     if err != nil {
         return nil, err
     }
     defer file.Close()
 
-    var records []rod_utils.PageData
+    var records []PageDataWrapper
     decoder := json.NewDecoder(file)
     err = decoder.Decode(&records)
+    
     return records, err
 }

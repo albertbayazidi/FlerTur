@@ -5,6 +5,47 @@ import (
 	"time"
 	"strconv"
 )
+var stationMap = map[string][]string{
+		"Oslo S":                {"59.910357","10.753051"},
+		"Trondheim S":           {"63.436279","10.399123"},
+		"Stavanger stasjon":     {"58.966568","5.732616"},
+		"Bergen stasjon":        {"60.390434","5.333511"},
+		"Fredrikstad stasjon":   {"59.208805","10.950282"},
+		"Kristiansand stasjon":  {"58.14559","7.988067"},
+		"Asker stasjon":				 {"59.833128","10.434169"},
+		"Arendal stasjon":			 {"58.465114","8.7693"},
+    }
+
+type Route struct {
+	Start string
+	End   string
+}
+
+var routes = []Route{
+		{"Bergen stasjon", "Fredrikstad stasjon"},
+		{"Bergen stasjon", "Kristiansand stasjon"},
+		{"Bergen stasjon", "Asker stasjon"},
+
+		{"Fredrikstad stasjon", "Kristiansand stasjon"},
+		{"Fredrikstad Stasjon", "Asker stasjon"},
+
+		{"Oslo S", "Bergen stasjon"},
+		{"Oslo S", "Fredrikstad stasjon"},
+		{"Oslo S", "Kristiansand stasjon"},
+		{"Oslo S", "Stavanger stasjon"},
+		{"Oslo S", "Trondheim S"},
+		{"Oslo S", "Asker stasjon"},
+
+		{"Stavanger stasjon", "Bergen stasjon"},
+		{"Stavanger stasjon", "Fredrikstad stasjon"},
+		{"Stavanger stasjon", "Kristiansand stasjon"},
+		{"Stavanger stasjon", "Asker stasjon"},
+
+		{"Trondheim S", "Fredrikstad stasjon"},
+		{"Trondheim S", "Kristiansand stasjon"},
+		{"Trondheim S", "Asker stasjon"},
+		{"Trondheim S", "Arendal stasjon"},
+	}
 
 type urlAndMetaData struct {
 	date time.Time
