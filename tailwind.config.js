@@ -11,6 +11,7 @@ export default {
         current: 'currentColor',
         primary: '#373737',
         second: '#181818',
+        accentColor : '#F36669'
       },
     },
   },
