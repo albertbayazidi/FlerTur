@@ -6,14 +6,14 @@ import (
 	"strconv"
 )
 var stationMap = map[string][]string{
-		"Oslo S":                {"59.910357","10.753051"},
-		"Trondheim S":           {"63.436279","10.399123"},
-		"Stavanger stasjon":     {"58.966568","5.732616"},
-		"Bergen stasjon":        {"60.390434","5.333511"},
-		"Fredrikstad stasjon":   {"59.208805","10.950282"},
-		"Kristiansand stasjon":  {"58.14559","7.988067"},
-		"Asker stasjon":				 {"59.833128","10.434169"},
-		"Arendal stasjon":			 {"58.465114","8.7693"},
+		"oslo S":                {"59.910357","10.753051"},
+		"trondheim S":           {"63.436279","10.399123"},
+		"stavanger stasjon":     {"58.966568","5.732616"},
+		"bergen stasjon":        {"60.390434","5.333511"},
+		"fredrikstad stasjon":   {"59.208805","10.950282"},
+		"kristiansand stasjon":  {"58.14559","7.988067"},
+		"asker stasjon":				 {"59.833128","10.434169"},
+		"arendal stasjon":			 {"58.465114","8.7693"},
     }
 
 type Route struct {
@@ -22,29 +22,29 @@ type Route struct {
 }
 
 var routes = []Route{
-		{"Bergen stasjon", "Fredrikstad stasjon"},
-		{"Bergen stasjon", "Kristiansand stasjon"},
-		{"Bergen stasjon", "Asker stasjon"},
+		{"bergen stasjon", "fredrikstad stasjon"},
+		{"bergen stasjon", "kristiansand stasjon"},
+		{"bergen stasjon", "asker stasjon"},
 
-		{"Fredrikstad stasjon", "Kristiansand stasjon"},
-		{"Fredrikstad Stasjon", "Asker stasjon"},
+		{"fredrikstad stasjon", "kristiansand stasjon"},
+		{"fredrikstad stasjon", "asker stasjon"},
 
-		{"Oslo S", "Bergen stasjon"},
-		{"Oslo S", "Fredrikstad stasjon"},
-		{"Oslo S", "Kristiansand stasjon"},
-		{"Oslo S", "Stavanger stasjon"},
-		{"Oslo S", "Trondheim S"},
-		{"Oslo S", "Asker stasjon"},
+		{"oslo s", "bergen stasjon"},
+		{"oslo s", "fredrikstad stasjon"},
+		{"oslo s", "kristiansand stasjon"},
+		{"oslo s", "stavanger stasjon"},
+		{"oslo s", "trondheim s"},
+		{"oslo s", "asker stasjon"},
 
-		{"Stavanger stasjon", "Bergen stasjon"},
-		{"Stavanger stasjon", "Fredrikstad stasjon"},
-		{"Stavanger stasjon", "Kristiansand stasjon"},
-		{"Stavanger stasjon", "Asker stasjon"},
+		{"stavanger stasjon", "bergen stasjon"},
+		{"stavanger stasjon", "fredrikstad stasjon"},
+		{"stavanger stasjon", "kristiansand stasjon"},
+		{"stavanger stasjon", "asker stasjon"},
 
-		{"Trondheim S", "Fredrikstad stasjon"},
-		{"Trondheim S", "Kristiansand stasjon"},
-		{"Trondheim S", "Asker stasjon"},
-		{"Trondheim S", "Arendal stasjon"},
+		{"trondheim s", "fredrikstad stasjon"},
+		{"trondheim s", "kristiansand stasjon"},
+		{"trondheim s", "asker stasjon"},
+		{"trondheim s", "arendal stasjon"},
 	}
 
 type urlAndMetaData struct {

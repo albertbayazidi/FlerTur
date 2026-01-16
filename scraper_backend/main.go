@@ -10,7 +10,7 @@ import (
 
 var mu sync.Mutex 
 var maxDay = 2  // keep at low for testing 
-var maxStaions = 2 // keep at low for testing  
+var maxStaions = 4 // keep at low for testing  
 
 func mainProsses(startStation string, endStation string, currentDate string) PageDataWrapper{
 	browser := rod.New().MustConnect()
@@ -50,12 +50,13 @@ func main() {
 
 	start := time.Now()
 	for index, route := range routes {
-		fmt.Println("CurrentRouteNr", index)
+		fmt.Println("Start:", route.Start, "End:", route.End)
 		result1 := mainProsses(route.Start, route.End, currentDate)
 		allResults = append(allResults, result1)
 
 		time.Sleep(time.Second) 
 
+		fmt.Println("Start:", route.End, "End:", route.Start)
 		result2 := mainProsses(route.End, route.Start, currentDate)
 		allResults = append(allResults, result2)
 		
