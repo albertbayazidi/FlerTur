@@ -1,7 +1,7 @@
 function Results({ results }) {
     const formatDate = (baseDateString, daysToAdd) => {
     const date = new Date(baseDateString);
-    date.setDate(date.getDate() + daysToAdd); 
+    date.setDate(date.getDate() + daysToAdd + 1); 
     
     return date.toLocaleDateString("no-NO", { 
       day: "2-digit", 
@@ -21,7 +21,7 @@ function Results({ results }) {
   return (
     <div className="mx-auto mt-4 w-3/5 flex flex-col gap-6">
       {results.map((route, index) => (
-        <div key={index} className="rounded-xl bg-second p-4 text-white shadow-lg">
+        <div key={index} className="rounded-xl capitalize bg-second p-4 text-white shadow-lg">
           <h2 className="mb-4 text-xl font-bold ">
             {route.startStation} ➝ {route.endStation}
           </h2>

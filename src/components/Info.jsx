@@ -23,17 +23,18 @@ function Info() {
             <h1 className="mb-8 text-3xl text-center font-bold text-white">Info:</h1>
 
             <p className="text-center text-white ">
-                <strong>NB!</strong> Denne nettsiden er under konstruksjon. Dataen er hentet med
-                go-crawleren/scraperen, men siden scraperen krasjer
-                innimellom har jeg stanset den inntil den er blitt mer
-                robust, og forhåpentligvis parallellisert. Inntil videre er
-                dette en demoside.
+                <strong>NB!</strong> Denne nettsiden er under konstruksjon.
+                        Tallene oppdateres én gang hvert 30. minutt. Det betyr
+                        at priser og tilgjengelighet i enkelte tilfeller kan
+                        avvike noe fra sanntidsinformasjonen hos EnTUR. Dataen
+                        er hentet med en GO-crawleren/scraperen. 
             </p>
 
             <p className="text-center text-white">
-              Denne nettsiden prøver å finne de billigste billettprisene to uker
-                            fram i tid. Jeg tjener ikke noe på salget av billetene.
-                            Du kan finne hele prosjektet på github.
+              Denne nettsiden prøver å finne de billigste billettprisene en uke
+                        fram i tid. Jeg tjener ikke noe på salget av billetene.
+                        Du kan finne hele prosjektet på github og en forklaring
+                        på hvorfor den bare ser en uke fram i tid.
             </p>
         </div>
 

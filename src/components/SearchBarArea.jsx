@@ -64,13 +64,10 @@ function SearchBarArea({ onSearch }) {
       <datalist id="cityname">
         <option value="Oslo S" />
         <option value="Trondheim S" />
-        <option value="Lillehammer stasjon" />
         <option value="Stavanger stasjon" />
         <option value="Bergen stasjon" />
-        <option value="Lillestrøm stasjon" />
         <option value="Fredrikstad stasjon" />
         <option value="Kristiansand stasjon" />
-        <option value="Kongsvinger stasjon" />
       </datalist>
 
       <img
