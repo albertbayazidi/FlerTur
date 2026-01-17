@@ -30,9 +30,6 @@ Bun.serve({
       }
 
       try {
-        // 3. The Query
-        // We use Postgres JSON functions to format the response right in the DB.
-        // This makes the Javascript code incredibly simple.
         const results = await sql`
           SELECT 
             w.start_station as "startStation",
@@ -47,7 +44,7 @@ Bun.serve({
                   'numberOfTrains', r.number_of_trains,
                   'trainIds', r.train_ids,
                   'url', r.url
-                )
+                ) ORDER BY r. start_time
               ) FILTER (WHERE r.id IS NOT NULL), 
               '[]'
             ) AS "pageDataResults"
@@ -56,9 +53,10 @@ Bun.serve({
           WHERE w.start_station ILIKE ${from} 
             AND w.end_station ILIKE ${to}
           GROUP BY w.id
+          ORDER BY w.retrieval_time DESC
+          LIMIT 1 
         `;
 
-        // 4. Return JSON
         return Response.json(results, {
           headers: { "Access-Control-Allow-Origin": "*" },
         });

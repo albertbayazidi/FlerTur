@@ -9,8 +9,8 @@ import (
 )
 
 var mu sync.Mutex 
-var maxDay = 2  // keep at low for testing 
-var maxStaions = 4 // keep at low for testing  
+var maxDay = 6 // keep at low for testing  //Final number should be 13
+var maxStaions = 8 // keep at low for testing  // Final number should be 8
 
 func mainProsses(startStation string, endStation string, currentDate string) PageDataWrapper{
 	browser := rod.New().MustConnect()
@@ -28,8 +28,7 @@ func mainProsses(startStation string, endStation string, currentDate string) Pag
 
 	currentDay = 0
 	pageList, _ := browser.Pages()
-	for index, currentPage := range pageList {
-		fmt.Println("CurrentPageNr", index)
+	for _, currentPage := range pageList {
 		currentPage.Activate()
 		rod_utils.Crawler(currentPage)
 		pageDataResults = append(pageDataResults, rod_utils.Scraper(currentPage))
@@ -43,12 +42,15 @@ func mainProsses(startStation string, endStation string, currentDate string) Pag
 }
 
 func main() {
+	db := ConnectDB()
+  defer db.Close()
+
 	var allResults []PageDataWrapper
 	now := time.Now()
 	tomorrow := now.AddDate(0, 0, 1)
 	currentDate := tomorrow.Format("2006-01-02")
 
-	start := time.Now()
+	//start := time.Now()
 	for index, route := range routes {
 		fmt.Println("Start:", route.Start, "End:", route.End)
 		result1 := mainProsses(route.Start, route.End, currentDate)
@@ -66,6 +68,7 @@ func main() {
 			break
 		}
 	}
+	/*
 	elapsed := time.Since(start) 
 
 	// DEBUGGING ONLY
@@ -73,14 +76,16 @@ func main() {
 		PrintPageDataWrapper(result)
 	}
 	fmt.Printf("Code block took %s\n", elapsed)
-	/*
-	SavePageData("../public/pageData.json", wrappedPageDataResults)
-	loaded, _ := LoadPageData("../public/pageData.json")
-
-	for _, pageDataResult := range loaded {
-		printPageData(&pageDataResult)
-	}
 	*/
+
+	// 2. SAVE TO DB instead of just printing
+	fmt.Println("Saving results to database")
+	err := SaveToDB(db, allResults)
+	if err != nil {
+			fmt.Println("Fatal error saving to DB:", err)
+	} else {
+			fmt.Println("Successfully saved all routes!")
+	}	
 
 	time.Sleep(time.Hour)
 }

@@ -6,15 +6,20 @@ import (
 	"strconv"
 
 	"github.com/go-rod/rod"
+	"github.com/uptrace/bun"
 )
 
 type PageData struct {
-    Duration       string    `json:"duration"`
-    StartTime      string    `json:"startTime"`
-    Price          int       `json:"price"`
-    NumberOfTrains int       `json:"numberOfTrains"`
-    TrainIds       []string  `json:"trainIds"`
-    URL            string    `json:"url"`
+    bun.BaseModel `bun:"table:page_data_results,alias:pdr"`
+
+    ID             int64    `bun:"id,pk,autoincrement"`
+    WrapperID      int64    `bun:"wrapper_id"` // The Foreign Key
+    Duration       string   `bun:"duration"`
+    StartTime      string   `bun:"start_time"`
+    Price          int      `bun:"price"`
+    NumberOfTrains int      `bun:"number_of_trains"`
+    TrainIds       []string `bun:"train_ids,array"` // 'array' handles the Postgres text[] type
+    URL            string   `bun:"url"`
 }
 
 
