@@ -58,3 +58,4 @@ hentes, mens selve billettene er ment for sju dager frem i tid (altså fra i
 morgen), derav + 1.
 - Lag robots.txt
 - Forbedre SEO
+- bytt til select SearchBarArea

@@ -19,14 +19,21 @@ function SearchBarArea({ onSearch }) {
   return (
     <div className="bg-second">
       <div className="mx-4 grid gap-4 pt-6 sm:mx-10 sm:grid-cols-3 sm:items-center">
-        <input
+        <select
           className="w-full rounded px-3 py-3 text-primary focus:outline-none"
           type="text"
           placeholder="Fra"
           list="cityname"
           value={from}
           onChange={(e) => setFrom(e.target.value)}
-        />
+        >
+            <option value="Oslo S">Oslo S</option>
+            <option value="Trondheim S" >Trondheim S</option>
+            <option value="Stavanger stasjon">Stavanger stasjon</option>
+            <option value="Bergen stasjon">Bergen stasjon</option>
+            <option value="Fredrikstad stasjon" >Fredrikstad stasjon</option>
+            <option value="Kristiansand stasjon" >Kristiansand stasjon</option>
+        </select>
 
         <button
           type="button"
@@ -36,14 +43,22 @@ function SearchBarArea({ onSearch }) {
           Bytt retning
         </button>
 
-        <input
+        <select
           className="w-full rounded px-3 py-3 text-primary focus:outline-none"
           type="text"
           placeholder="Til"
           list="cityname"
           value={to}
           onChange={(e) => setTo(e.target.value)}
-        />
+        >
+            <option value="Oslo S">Oslo S</option>
+            <option value="Trondheim S" >Trondheim S</option>
+            <option value="Stavanger stasjon">Stavanger stasjon</option>
+            <option value="Bergen stasjon">Bergen stasjon</option>
+            <option value="Fredrikstad stasjon" >Fredrikstad stasjon</option>
+            <option value="Kristiansand stasjon" >Kristiansand stasjon</option>
+        </select>
+
 
         {/* I cant be bother finding out the real way now */}
         <div></div> 
@@ -61,18 +76,10 @@ function SearchBarArea({ onSearch }) {
         <div></div>
       </div>
 
-      <datalist id="cityname">
-        <option value="Oslo S" />
-        <option value="Trondheim S" />
-        <option value="Stavanger stasjon" />
-        <option value="Bergen stasjon" />
-        <option value="Fredrikstad stasjon" />
-        <option value="Kristiansand stasjon" />
-      </datalist>
 
       <img
         src="/search_bar_kunst_remix.png"
-        className="w-full object-contain"
+        className="w-full pt-1 object-contain"
         alt=""
       />
     </div>
