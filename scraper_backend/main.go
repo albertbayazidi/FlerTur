@@ -41,7 +41,7 @@ func mainProsses(startStation string, endStation string, currentDate string) Pag
 	return wrapper
 }
 
-func main() {
+func mainProssesSave(){
 	db := ConnectDB()
   defer db.Close()
 
@@ -50,15 +50,12 @@ func main() {
 	tomorrow := now.AddDate(0, 0, 1)
 	currentDate := tomorrow.Format("2006-01-02")
 
-	//start := time.Now()
 	for index, route := range routes {
-		fmt.Println("Start:", route.Start, "End:", route.End)
 		result1 := mainProsses(route.Start, route.End, currentDate)
 		allResults = append(allResults, result1)
 
 		time.Sleep(time.Second) 
 
-		fmt.Println("Start:", route.End, "End:", route.Start)
 		result2 := mainProsses(route.End, route.Start, currentDate)
 		allResults = append(allResults, result2)
 		
@@ -68,17 +65,7 @@ func main() {
 			break
 		}
 	}
-	/*
-	elapsed := time.Since(start) 
 
-	// DEBUGGING ONLY
-	for _,result := range allResults {
-		PrintPageDataWrapper(result)
-	}
-	fmt.Printf("Code block took %s\n", elapsed)
-	*/
-
-	// 2. SAVE TO DB instead of just printing
 	fmt.Println("Saving results to database")
 	err := SaveToDB(db, allResults)
 	if err != nil {
@@ -87,5 +74,25 @@ func main() {
 			fmt.Println("Successfully saved all routes!")
 	}	
 
-	time.Sleep(time.Hour)
+}
+
+func main() {
+    interval := 30 * time.Minute
+
+    for {
+        start := time.Now()
+
+        mainProssesSave()
+
+        duration := time.Since(start)
+        fmt.Printf("Process took: %v\n", duration)
+        wait := interval - duration
+
+        if wait > 0 {
+            fmt.Printf("Waiting for %v before next run...\n", wait)
+            time.Sleep(wait)
+        } else {
+            fmt.Println("Process took longer than 30 minutes. Restarting immediately.")
+        }
+    }
 }
