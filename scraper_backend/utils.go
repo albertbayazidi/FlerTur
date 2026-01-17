@@ -6,8 +6,8 @@ import (
 	"strconv"
 )
 var stationMap = map[string][]string{
-		"oslo S":                {"59.910357","10.753051"},
-		"trondheim S":           {"63.436279","10.399123"},
+		"oslo s":                {"59.910357","10.753051"},
+		"trondheim s":           {"63.436279","10.399123"},
 		"stavanger stasjon":     {"58.966568","5.732616"},
 		"bergen stasjon":        {"60.390434","5.333511"},
 		"fredrikstad stasjon":   {"59.208805","10.950282"},
@@ -22,29 +22,18 @@ type Route struct {
 }
 
 var routes = []Route{
-		{"bergen stasjon", "fredrikstad stasjon"},
-		{"bergen stasjon", "kristiansand stasjon"},
-		{"bergen stasjon", "asker stasjon"},
-
-		{"fredrikstad stasjon", "kristiansand stasjon"},
-		{"fredrikstad stasjon", "asker stasjon"},
 
 		{"oslo s", "bergen stasjon"},
-		{"oslo s", "fredrikstad stasjon"},
-		{"oslo s", "kristiansand stasjon"},
 		{"oslo s", "stavanger stasjon"},
 		{"oslo s", "trondheim s"},
-		{"oslo s", "asker stasjon"},
+		
+		{"bergen stasjon", "fredrikstad stasjon"},
+		{"bergen stasjon", "kristiansand stasjon"},
 
 		{"stavanger stasjon", "bergen stasjon"},
 		{"stavanger stasjon", "fredrikstad stasjon"},
 		{"stavanger stasjon", "kristiansand stasjon"},
-		{"stavanger stasjon", "asker stasjon"},
 
-		{"trondheim s", "fredrikstad stasjon"},
-		{"trondheim s", "kristiansand stasjon"},
-		{"trondheim s", "asker stasjon"},
-		{"trondheim s", "arendal stasjon"},
 	}
 
 type urlAndMetaData struct {

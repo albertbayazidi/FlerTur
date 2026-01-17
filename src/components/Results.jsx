@@ -19,10 +19,10 @@ function Results({ results }) {
     console.log(results)
 
   return (
-    <div className="mx-4 mt-4 flex flex-col gap-6 sm:mx-10">
+    <div className="mx-auto mt-4 w-3/5 flex flex-col gap-6">
       {results.map((route, index) => (
         <div key={index} className="rounded-xl bg-second p-4 text-white shadow-lg">
-          <h2 className="mb-4 text-xl font-bold text-gray-200">
+          <h2 className="mb-4 text-xl font-bold ">
             {route.startStation} ➝ {route.endStation}
           </h2>
           
@@ -31,7 +31,7 @@ function Results({ results }) {
               <div key={i} className="flex flex-col justify-between rounded-lg
                                 bg-primary p-3 sm:flex-row sm:items-center">
                 <div>
-                    <div className="text-lg font-bold text-white">
+                    <div className="text-lg font-bold text-accentColor">
                     {formatDate(route.retrievalTime, i)} Kl. {ticket.startTime}
                     </div>
                   <div className="text-sm">Varighet: {ticket.duration}</div>

@@ -5,6 +5,7 @@
     - Try adding concurrency in the form of having two threads, each with 7 tabs and one browser
     - Try converting each function call to collect data into a separate process so each can be handled concurrently
 - Add sorting by price, day
+- Remove " from Tog database, not sure if its an issue at go level, og db level
 
 
 # FINISHED TASKS
