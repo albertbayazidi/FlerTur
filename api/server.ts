@@ -1,11 +1,13 @@
 import { sql } from "bun";
 
 const PORT = 3001;
+const HOSTNAME = "0.0.0.0"
 
-console.log(`API Server running at http://localhost:${PORT}`);
+console.log(`API Server running at http://${HOSTNAME}:${PORT}`);
 
 Bun.serve({
   port: PORT,
+  hostname: HOSTNAME,
   async fetch(req) {
     const url = new URL(req.url);
 

@@ -16,17 +16,24 @@ services:
       retries: 10
 
   api:
+    container_name: flertur_api
     build: ./api  
     ports:
       - "3001:3001" 
+    networks:
+      - 
     depends_on:
       db:
         condition: service_healthy
     environment:
-      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:${POSTGRES_PORT}/${POSTGRES_DB}
     volumes:
       - ./api:/app
       - /app/node_modules
 
 volumes:
   postgres_data:
+
+networks:
+  web_proxy:
+    external: true

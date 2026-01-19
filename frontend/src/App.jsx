@@ -17,9 +17,9 @@ function App() {
     setResults(null); 
 
     try {
-      const response = await fetch(
-        `http://localhost:3001/api/search?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`
-      );
+        const response = await fetch(
+            `/api/search?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`
+          );
       
       if (!response.ok) throw new Error("Nooooooo :(");
       
