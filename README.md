@@ -19,29 +19,20 @@ Nettsiden henter automatisk reisedata for de neste sju dagene. Siden det å
 hente informasjon direkte fra EnTUR kan være tidkrevende, sjekkes kun åtte
 ruter i begge retninger. Dette gjør prosessen rask nok til at billett URLen
 ikke utløper. Det er planer om å parallellisere koden slik at det
-forhåpentligvis blir mulig å se to uker frem i tid.
+forhåpentligvis blir mulig å se to uker frem i tid. Akkurat nå er denne
+nettsiden en demo side.
 
 Tallene oppdateres én gang hvert 30. minutt. Det betyr at priser og
 tilgjengelighet i enkelte tilfeller kan avvike noe fra sanntidsinformasjonen
 hos EnTUR
-
-## Kjøre lokalt
-Om man har forslag til forbedringer, kan man teste dem lokalt ved å gjøre følgende.
-``` bash 
-git clone https://github.com/albertbayazidi/FlerTur.git
-cd FlerTur
-npm/bun i
-npm/bun run dev
-```
 
 ## DEV
 
 For å sette up tjenesten lokalt bruk man følgende koomandoene.
 
 ```bash
-docker compose --profile manual_seed up # seeder databasen, bruk flaget -- profile kun første gangen.
-bun run web_backend/sever.ts
-bun run dev
+cd frontend && bun run dev && cd ..
+docker compose up -d # will take some time before results start showing up
 ```
 
 ### Oppgaver
