@@ -1,18 +1,18 @@
 import Route from "./Route.jsx";
 
-function Info() {
-  const routes1 = [
-    { start: "oslo s", end: "bergen stasjon" },
-    { start: "oslo s", end: "stavanger stasjon" },
-    { start: "oslo s", end: "trondheim s" },
-    { start: "bergen stasjon", end: "fredrikstad stasjon" },
+function Info({ onRouteSelect }) {
+const routes1 = [
+    { start: "Oslo S", end: "Bergen stasjon" },
+    { start: "Oslo S", end: "Stavanger stasjon" },
+    { start: "Oslo S", end: "Trondheim S" },
+    { start: "Bergen stasjon", end: "Fredrikstad stasjon" },
   ];
 
   const routes2 = [
-    { start: "bergen stasjon", end: "kristiansand stasjon" },
-    { start: "stavanger stasjon", end: "bergen stasjon" },
-    { start: "stavanger stasjon", end: "fredrikstad stasjon" },
-    { start: "stavanger stasjon", end: "kristiansand stasjon" },
+    { start: "Bergen stasjon", end: "Kristiansand stasjon" },
+    { start: "Stavanger stasjon", end: "Bergen stasjon" },
+    { start: "Stavanger stasjon", end: "Fredrikstad stasjon" },
+    { start: "Stavanger stasjon", end: "Kristiansand stasjon" },
   ];
 
   return (
@@ -36,14 +36,14 @@ function Info() {
         <h1 className="mb-8 text-3xl text-center font-bold text-white">Tilgjengelige Ruter:</h1>
         <div className="grid grid-cols-1 gap-x-4 gap-y-2 lg:grid-cols-2">
           <div className="flex flex-col gap-2">
-            {routes1.map((route, index) => (
-              <Route key={`r1-${index}`} start={route.start} end={route.end} />
+            {routes1.map((route) => (
+              <Route key={`${route.start}-${route.end}`} start={route.start} end={route.end} onSelect={onRouteSelect} />
             ))}
           </div>
 
           <div className="flex flex-col gap-2">
-            {routes2.map((route, index) => (
-              <Route key={`r2-${index}`} start={route.start} end={route.end} />
+            {routes2.map((route) => (
+              <Route key={`${route.start}-${route.end}`} start={route.start} end={route.end} onSelect={onRouteSelect} />
             ))}
           </div>
         </div>

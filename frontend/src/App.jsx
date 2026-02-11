@@ -11,14 +11,22 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
 
-  const executeSearch = async (from, to) => {
+  const [from, setFrom] = useState("Trondheim S");
+  const [to, setTo] = useState("Oslo S");
+
+  const handleRouteSelect = (start, end) => {
+    setFrom(start);
+    setTo(end);
+  };
+
+  const executeSearch = async (searchFrom, searchTo) => {
     setLoading(true);
     setHasSearched(true);
     setResults(null);
 
     try {
       const response = await fetch(
-        `http://localhost:3001/api/search?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`,
+        `http://localhost:3001/api/search?from=${encodeURIComponent(searchFrom)}&to=${encodeURIComponent(searchTo)}`,
       );
 
       if (!response.ok) throw new Error("Nooooooo :(");
@@ -35,14 +43,21 @@ function App() {
   const renderContent = () => {
     if (loading) return <Loading />;
     if (hasSearched && results) return <Results results={results} />;
-    return <Info />;
+    
+    return <Info onRouteSelect={handleRouteSelect} />;
   };
 
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />
 
-      <SearchBarArea onSearch={executeSearch} />
+      <SearchBarArea 
+        onSearch={executeSearch} 
+        from={from} 
+        setFrom={setFrom} 
+        to={to} 
+        setTo={setTo} 
+      />
 
       {renderContent()}
 

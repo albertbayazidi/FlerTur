@@ -1,8 +1,9 @@
-import { useState } from "react";
-
-function SearchBarArea({ onSearch }) {
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
+function SearchBarArea({ from, setFrom, to, setTo, onSearch }) {
+  const swapStations = () => {
+    const temp = from;
+    setFrom(to);
+    setTo(temp);
+  };
 
   const handleSearchClick = () => {
     if (from && to) {
@@ -10,20 +11,12 @@ function SearchBarArea({ onSearch }) {
     }
   };
 
-  const swapStations = () => {
-    const temp = from;
-    setFrom(to);
-    setTo(temp);
-  };
-
   return (
     <div className="bg-second">
       <div className="mx-4 grid gap-4 pt-6 sm:mx-10 sm:grid-cols-3 sm:items-center">
         <select
           className="w-full rounded px-3 py-3 text-primary focus:outline-none"
-          type="text"
           placeholder="Fra"
-          list="cityname"
           value={from}
           onChange={(e) => setFrom(e.target.value)}
         >
@@ -45,9 +38,7 @@ function SearchBarArea({ onSearch }) {
 
         <select
           className="w-full rounded px-3 py-3 text-primary focus:outline-none"
-          type="text"
           placeholder="Til"
-          list="cityname"
           value={to}
           onChange={(e) => setTo(e.target.value)}
         >
