@@ -1,4 +1,4 @@
-FROM oven/bun:latest
+FROM oven/bun:alpine
 
 WORKDIR /app
 
@@ -9,5 +9,4 @@ COPY . .
 
 EXPOSE 1234
 
-CMD ["bun", "run", "dev"]
-
+CMD ["bun", "run", "dev", "--", "--host"]

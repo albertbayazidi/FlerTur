@@ -1,6 +1,6 @@
 import { sql } from "bun";
 
-const PORT = 3001;
+const PORT = 3005;
 const HOSTNAME = "0.0.0.0"
 
 console.log(`API Server running at http://${HOSTNAME}:${PORT}`);

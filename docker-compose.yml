@@ -14,14 +14,16 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+    networks:
+      - default
 
   api:
     container_name: flertur_api
     build: ./api  
     ports:
-      - "3001:3001" 
+      - "127.0.0.1:3005:3005" 
     networks:
-      - 
+      - default
     depends_on:
       db:
         condition: service_healthy
@@ -34,6 +36,3 @@ services:
 volumes:
   postgres_data:
 
-networks:
-  web_proxy:
-    external: true
