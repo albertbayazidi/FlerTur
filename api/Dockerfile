@@ -10,3 +10,4 @@ COPY . .
 EXPOSE 3001
 
 CMD ["sh", "-c", "bun run scripts/migrate.ts && bun run server.ts"]
+#CMD ["sh", "-c", "bun run scripts/migrate.ts && bun run scripts/seed.ts && bun run server.ts"]
