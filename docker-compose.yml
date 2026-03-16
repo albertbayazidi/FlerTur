@@ -1,5 +1,6 @@
 services:
-  db:
+  flertur_db:
+    container_name: flertur_db
     image: postgres:18-alpine
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
@@ -17,7 +18,7 @@ services:
     networks:
       - default
 
-  api:
+  flertur_api:
     container_name: flertur_api
     build: ./api  
     ports:
@@ -25,19 +26,22 @@ services:
     networks:
       - default
     depends_on:
-      db:
+      flertur_db:
         condition: service_healthy
     environment:
-      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:${POSTGRES_PORT}/${POSTGRES_DB}
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@flertur_db:${POSTGRES_PORT}/${POSTGRES_DB}
     volumes:
       - ./api:/app
       - /app/node_modules
 
-  frontend:
+  flertur_frontend:
+    container_name: flertur_frontend
     build: ./frontend
+    user: "1000:1000"
     volumes:
       - ./frontend:/app
       - /app/node_modules
+      - /var/www/flertur:/app/dist
 
 volumes:
   postgres_data:
