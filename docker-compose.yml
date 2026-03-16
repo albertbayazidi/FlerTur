@@ -18,7 +18,7 @@ services:
   api:
     build: ./api  
     ports:
-      - "3001:3001" 
+      - "3005:3005" 
     depends_on:
       db:
         condition: service_healthy
@@ -26,6 +26,12 @@ services:
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
     volumes:
       - ./api:/app
+      - /app/node_modules
+
+  frontend:
+    build: ./frontend
+    volumes:
+      - ./frontend:/app
       - /app/node_modules
 
 volumes:
