@@ -1,19 +1,14 @@
-import { useState } from "react"; 
-
-function SearchBarArea({ onSearch }) { 
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
-
-  const handleSearchClick = () => {
-    if(from && to) {
-        onSearch(from, to);
-    }
-  };
-
+function SearchBarArea({ from, setFrom, to, setTo, onSearch }) {
   const swapStations = () => {
     const temp = from;
     setFrom(to);
     setTo(temp);
+  };
+
+  const handleSearchClick = () => {
+    if (from && to) {
+      onSearch(from, to);
+    }
   };
 
   return (
@@ -21,23 +16,21 @@ function SearchBarArea({ onSearch }) {
       <div className="mx-4 grid gap-4 pt-6 sm:mx-10 sm:grid-cols-3 sm:items-center">
         <select
           className="w-full rounded px-3 py-3 text-primary focus:outline-none"
-          type="text"
           placeholder="Fra"
-          list="cityname"
           value={from}
           onChange={(e) => setFrom(e.target.value)}
         >
-            <option value="Oslo S">Oslo S</option>
-            <option value="Trondheim S" >Trondheim S</option>
-            <option value="Stavanger stasjon">Stavanger stasjon</option>
-            <option value="Bergen stasjon">Bergen stasjon</option>
-            <option value="Fredrikstad stasjon" >Fredrikstad stasjon</option>
-            <option value="Kristiansand stasjon" >Kristiansand stasjon</option>
+          <option value="Oslo S">Oslo S</option>
+          <option value="Trondheim S">Trondheim S</option>
+          <option value="Stavanger stasjon">Stavanger stasjon</option>
+          <option value="Bergen stasjon">Bergen stasjon</option>
+          <option value="Fredrikstad stasjon">Fredrikstad stasjon</option>
+          <option value="Kristiansand stasjon">Kristiansand stasjon</option>
         </select>
 
         <button
           type="button"
-          onClick={swapStations} 
+          onClick={swapStations}
           className="w-full rounded bg-primary py-3 text-white hover:bg-second hover:ring hover:ring-primary sm:w-auto"
         >
           Bytt retning
@@ -45,29 +38,26 @@ function SearchBarArea({ onSearch }) {
 
         <select
           className="w-full rounded px-3 py-3 text-primary focus:outline-none"
-          type="text"
           placeholder="Til"
-          list="cityname"
           value={to}
           onChange={(e) => setTo(e.target.value)}
         >
-            <option value="Oslo S">Oslo S</option>
-            <option value="Trondheim S" >Trondheim S</option>
-            <option value="Stavanger stasjon">Stavanger stasjon</option>
-            <option value="Bergen stasjon">Bergen stasjon</option>
-            <option value="Fredrikstad stasjon" >Fredrikstad stasjon</option>
-            <option value="Kristiansand stasjon" >Kristiansand stasjon</option>
+          <option value="Oslo S">Oslo S</option>
+          <option value="Trondheim S">Trondheim S</option>
+          <option value="Stavanger stasjon">Stavanger stasjon</option>
+          <option value="Bergen stasjon">Bergen stasjon</option>
+          <option value="Fredrikstad stasjon">Fredrikstad stasjon</option>
+          <option value="Kristiansand stasjon">Kristiansand stasjon</option>
         </select>
 
-
         {/* I cant be bother finding out the real way now */}
-        <div></div> 
+        <div></div>
 
         <div>
           <button
             type="button"
             className="w-full rounded bg-primary py-3 text-white hover:bg-second hover:ring hover:ring-primary"
-            onClick={handleSearchClick} 
+            onClick={handleSearchClick}
           >
             Søk
           </button>
@@ -76,12 +66,7 @@ function SearchBarArea({ onSearch }) {
         <div></div>
       </div>
 
-
-      <img
-        src="/search_bar_kunst_remix.png"
-        className="w-full pt-1 object-contain"
-        alt=""
-      />
+      <img src="/search_bar_kunst_remix.png" className="w-full pt-1 object-contain" alt="" />
     </div>
   );
 }

@@ -1,6 +1,6 @@
-<p align='center'>
+<p align="center">
 
-  <img src='public/logo.png'>
+  <img src="images/dark_logo.png">
   
 </p>
 
@@ -8,7 +8,8 @@
 [Fler TUR](https://bayazidi.xyz/) er en nettjeneste som prøver å finne de billigste billettprisene en måned fram i tid.
 Verdiene som blir framstilt kan avvike litt. 
 
-![web_page](public/page.png)
+![Image of web page](images/2026-01-19_screenshot.png)
+![Image of web page when search has been made](images/2026-01-19_screenshot_1.png)
 
 ## Hvordan funker Fler Tur
 FlerTUR henter automatisk inn reiseinformasjon fra EnTUR ved å sjekke ulike
