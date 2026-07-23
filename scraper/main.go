@@ -15,6 +15,7 @@ var mu sync.Mutex
 var maxDay = 6
 var maxStaions = 8
 var numThreads = 2
+var restTime = 30
 
 func mainProsses(browser *rod.Browser, startStation string, endStation string, currentDate string) types.PageDataWrapper {
 	var pageDataResults []types.PageData

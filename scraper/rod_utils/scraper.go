@@ -58,28 +58,44 @@ func capturePrice(priceString string) int {
 	return price
 }
 
-func captureData(travelSuggestion *rod.Element) types.PageData {
-
-	duration, _ := travelSuggestion.MustElement(durationSelector).Text()
-	startTime, _ := travelSuggestion.MustElement(startTimeSelector).Text()
-	priceString, _ := travelSuggestion.MustElement(priceSelector).Text()
-
-	data := types.PageData{Duration: duration}
-	data.StartTime = startTime
-	data.Price = capturePrice(priceString)
-	captureTrainId(travelSuggestion, &data)
-	return data
-}
-
 func captureUrl(page *rod.Page, travelSuggestions rod.Elements, currentCheapestTicketIndex int) string {
 	travelSuggestions[currentCheapestTicketIndex].MustClick()
 	return page.MustInfo().URL
+}
+
+func safeText(el *rod.Element, selector string) string {
+	child, err := el.Element(selector)
+	if err != nil || child == nil {
+		return ""
+	}
+
+	text, err := child.Text()
+	if err != nil {
+		return ""
+	}
+	return text
+}
+
+func captureData(travelSuggestion *rod.Element) types.PageData {
+	duration := safeText(travelSuggestion, durationSelector)
+	startTime := safeText(travelSuggestion, startTimeSelector)
+	priceString := safeText(travelSuggestion, priceSelector)
+
+	data := types.PageData{
+		Duration:  duration,
+		StartTime: startTime,
+		Price:     capturePrice(priceString),
+	}
+
+	captureTrainId(travelSuggestion, &data)
+	return data
 }
 
 func Scraper(page *rod.Page) types.PageData {
 	travelSuggestions := captureLiElements(page)
 	currentCheapestTicketIndex := 0
 	currentCheapestTicket := 9999999
+	var cheapestData types.PageData
 
 	for index, travelSuggestion := range travelSuggestions {
 		data := captureData(travelSuggestion)
@@ -87,11 +103,13 @@ func Scraper(page *rod.Page) types.PageData {
 		if data.Price < currentCheapestTicket {
 			currentCheapestTicket = data.Price
 			currentCheapestTicketIndex = index
+			cheapestData = data
 		}
 	}
 
-	data := captureData(travelSuggestions[currentCheapestTicketIndex])
-	data.URL = captureUrl(page, travelSuggestions, currentCheapestTicketIndex)
+	if len(travelSuggestions) > 0 {
+		cheapestData.URL = captureUrl(page, travelSuggestions, currentCheapestTicketIndex)
+	}
 
-	return data
+	return cheapestData
 }
