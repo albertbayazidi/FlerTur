@@ -1,27 +1,28 @@
 package main
 
 import (
-	"time"
-	"sync"
-	"github.com/go-rod/rod"
 	"fmt"
+	"sync"
+	"time"
+
 	"backend/rod_utils"
+	"backend/types"
+
+	"github.com/go-rod/rod"
 )
 
-var mu sync.Mutex 
-var maxDay = 6 // keep at low for testing  //Final number should be 13
-var maxStaions = 8 // keep at low for testing  // Final number should be 8
+var mu sync.Mutex
+var maxDay = 6
+var maxStaions = 8
+var numThreads = 2
 
-func mainProsses(startStation string, endStation string, currentDate string) PageDataWrapper{
-	browser := rod.New().MustConnect()
-	defer browser.MustClose() 	
-	
-	var pageDataResults []rod_utils.PageData 
+func mainProsses(browser *rod.Browser, startStation string, endStation string, currentDate string) types.PageDataWrapper {
+	var pageDataResults []types.PageData
 
 	currentDay := 0
 	url, _ := constructUrl(currentDate, startStation, endStation)
-	for currentDay <=  maxDay {
-		_ = browser.MustPage(url.url)
+	for currentDay <= maxDay {
+		_ = browser.MustPage(url.Url)
 		updateUrl(&url)
 		currentDay++
 	}
@@ -32,67 +33,102 @@ func mainProsses(startStation string, endStation string, currentDate string) Pag
 		currentPage.Activate()
 		rod_utils.Crawler(currentPage)
 		pageDataResults = append(pageDataResults, rod_utils.Scraper(currentPage))
+		currentPage.MustClose()
 	}
 
-	wrapper := PageDataWrapper{StartStation: startStation,
-																						EndStation: endStation,
-																						RetrievalTime: time.Now(),
-																						PageDataResults: pageDataResults}
+	wrapper := types.PageDataWrapper{
+		StartStation:    startStation,
+		EndStation:      endStation,
+		RetrievalTime:   time.Now(),
+		PageDataResults: pageDataResults,
+	}
 	return wrapper
 }
 
-func mainProssesSave(){
+func mainProssesSave() {
 	db := ConnectDB()
-  defer db.Close()
+	defer db.Close()
 
-	var allResults []PageDataWrapper
+	var allResults []types.PageDataWrapper
 	now := time.Now()
 	tomorrow := now.AddDate(0, 0, 1)
 	currentDate := tomorrow.Format("2006-01-02")
 
-	for index, route := range routes {
-		result1 := mainProsses(route.Start, route.End, currentDate)
-		allResults = append(allResults, result1)
+	limit := maxStaions + 1
+	if limit > len(routes) {
+		limit = len(routes)
+	}
+	activeRoutes := routes[:limit]
 
-		time.Sleep(time.Second) 
+	chunkSize := (len(activeRoutes) + numThreads - 1) / numThreads
+	var wg sync.WaitGroup
+	resultChan := make(chan types.PageDataWrapper, len(activeRoutes)*2)
 
-		result2 := mainProsses(route.End, route.Start, currentDate)
-		allResults = append(allResults, result2)
-		
-		time.Sleep(time.Second)
-
-		if index == maxStaions {
+	for i := 0; i < numThreads; i++ {
+		startIdx := i * chunkSize
+		if startIdx >= len(activeRoutes) {
 			break
 		}
+		endIdx := startIdx + chunkSize
+		if endIdx > len(activeRoutes) {
+			endIdx = len(activeRoutes)
+		}
+
+		wg.Add(1)
+		go func(start, end int) {
+			defer wg.Done()
+			browser := rod.New().MustConnect()
+			defer browser.MustClose()
+
+			for j := start; j < end; j++ {
+				route := activeRoutes[j]
+				fmt.Println("start", route.Start, "end", route.End)
+				result1 := mainProsses(browser, route.Start, route.End, currentDate)
+				resultChan <- result1
+
+				time.Sleep(time.Second)
+
+				result2 := mainProsses(browser, route.End, route.Start, currentDate)
+				resultChan <- result2
+
+				time.Sleep(time.Second)
+			}
+		}(startIdx, endIdx)
+	}
+
+	wg.Wait()
+	close(resultChan)
+
+	for res := range resultChan {
+		allResults = append(allResults, res)
 	}
 
 	fmt.Println("Saving results to database")
 	err := SaveToDB(db, allResults)
 	if err != nil {
-			fmt.Println("Fatal error saving to DB:", err)
+		fmt.Println("Fatal error saving to DB:", err)
 	} else {
-			fmt.Println("Successfully saved all routes!")
-	}	
-
+		fmt.Println("Successfully saved all routes!")
+	}
 }
 
 func main() {
-    interval := 30 * time.Minute
+	interval := 30 * time.Minute
 
-    for {
-        start := time.Now()
+	for {
+		start := time.Now()
 
-        mainProssesSave()
+		mainProssesSave()
 
-        duration := time.Since(start)
-        fmt.Printf("Process took: %v\n", duration)
-        wait := interval - duration
+		duration := time.Since(start)
+		fmt.Printf("Process took: %v\n", duration)
+		wait := interval - duration
 
-        if wait > 0 {
-            fmt.Printf("Waiting for %v before next run...\n", wait)
-            time.Sleep(wait)
-        } else {
-            fmt.Println("Process took longer than 30 minutes. Restarting immediately.")
-        }
-    }
+		if wait > 0 {
+			fmt.Printf("Waiting for %v before next run...\n", wait)
+			time.Sleep(wait)
+		} else {
+			fmt.Println("Process took longer than 30 minutes. Restarting immediately.")
+		}
+	}
 }
