@@ -2,50 +2,41 @@ package main
 
 import (
 	"fmt"
-	"time"
 	"strconv"
-)
-var stationMap = map[string][]string{
-		"oslo s":                {"59.910357","10.753051"},
-		"trondheim s":           {"63.436279","10.399123"},
-		"stavanger stasjon":     {"58.966568","5.732616"},
-		"bergen stasjon":        {"60.390434","5.333511"},
-		"fredrikstad stasjon":   {"59.208805","10.950282"},
-		"kristiansand stasjon":  {"58.14559","7.988067"},
-		"asker stasjon":				 {"59.833128","10.434169"},
-		"arendal stasjon":			 {"58.465114","8.7693"},
-    }
+	"time"
 
-type Route struct {
-	Start string
-	End   string
+	"backend/types"
+)
+
+var stationMap = map[string][]string{
+	"oslo s":               {"59.910357", "10.753051"},
+	"trondheim s":          {"63.436279", "10.399123"},
+	"stavanger stasjon":    {"58.966568", "5.732616"},
+	"bergen stasjon":       {"60.390434", "5.333511"},
+	"fredrikstad stasjon":  {"59.208805", "10.950282"},
+	"kristiansand stasjon": {"58.14559", "7.988067"},
+	"asker stasjon":        {"59.833128", "10.434169"},
+	"arendal stasjon":      {"58.465114", "8.7693"},
 }
 
-var routes = []Route{
+var routes = []types.Route{
 
-		{"oslo s", "bergen stasjon"},
-		{"oslo s", "stavanger stasjon"},
-		{"oslo s", "trondheim s"},
-		
-		{"bergen stasjon", "fredrikstad stasjon"},
-		{"bergen stasjon", "kristiansand stasjon"},
+	{"oslo s", "bergen stasjon"},
+	{"oslo s", "stavanger stasjon"},
+	{"oslo s", "trondheim s"},
 
-		{"stavanger stasjon", "bergen stasjon"},
-		{"stavanger stasjon", "fredrikstad stasjon"},
-		{"stavanger stasjon", "kristiansand stasjon"},
+	{"bergen stasjon", "fredrikstad stasjon"},
+	{"bergen stasjon", "kristiansand stasjon"},
 
-	}
-
-type urlAndMetaData struct {
-	date time.Time
-	stationLatLonPair string
-	url string
+	{"stavanger stasjon", "bergen stasjon"},
+	{"stavanger stasjon", "fredrikstad stasjon"},
+	{"stavanger stasjon", "kristiansand stasjon"},
 }
 
 var metaDataLeft = "https://entur.no/reiseresultater?transportModes=rail%2Ctram%2Cbus%2Ccoach%2Cwater%2Ccar_ferry%2Cmetro%2Cflytog%2Cflybuss"
-var metaDataRight ="&tripMode=oneway&walkSpeed=1.3&minimumTransferTime=120&timepickerMode=departAfter"
+var metaDataRight = "&tripMode=oneway&walkSpeed=1.3&minimumTransferTime=120&timepickerMode=departAfter"
 
-func parseDateToTime(dateStr string) (time.Time) {
+func parseDateToTime(dateStr string) time.Time {
 	layout := "2006-01-02"
 
 	unixTime, _ := time.Parse(layout, dateStr)
@@ -55,42 +46,40 @@ func parseDateToTime(dateStr string) (time.Time) {
 }
 
 func metaDataify(date time.Time) string {
-	return metaDataLeft + "&date=" + strconv.FormatInt(date.UnixMilli(),10) + metaDataRight 
+	return metaDataLeft + "&date=" + strconv.FormatInt(date.UnixMilli(), 10) + metaDataRight
 }
 
 func checkStation(station string, sendState string) (string, error) {
 	coords, ok := stationMap[station]
 	if !ok {
-			return "", fmt.Errorf("station not found: %s", station)
+		return "", fmt.Errorf("station not found: %s", station)
 	}
 
 	stationLatLonPair := "&" + sendState + "Label=" + station +
-											 "&" + sendState + "Lat=" + coords[0] +
-											 "&" + sendState + "Lon=" + coords[1]
+		"&" + sendState + "Lat=" + coords[0] +
+		"&" + sendState + "Lon=" + coords[1]
 
 	return stationLatLonPair, nil
 }
 
-func updateUrl(url *urlAndMetaData){
-	url.date = url.date.AddDate(0,0,1)
-	baseURL := metaDataify(url.date)
-	url.url = baseURL + url.stationLatLonPair
+func updateUrl(url *types.UrlAndMetaData) {
+	url.Date = url.Date.AddDate(0, 0, 1)
+	baseURL := metaDataify(url.Date)
+	url.Url = baseURL + url.StationLatLonPair
 
 }
 
-func constructUrl(date string, start string, stop string) (urlAndMetaData, error) {
+func constructUrl(date string, start string, stop string) (types.UrlAndMetaData, error) {
 	timeTime := parseDateToTime(date)
 	baseURL := metaDataify(timeTime)
-	url := urlAndMetaData{date: timeTime}
-	
+	url := types.UrlAndMetaData{Date: timeTime}
+
 	startLatLongPair, err := checkStation(start, "start")
 
 	endLatLongPair, err := checkStation(stop, "stop")
 
-	url.stationLatLonPair= startLatLongPair + endLatLongPair 
-	url.url = baseURL + startLatLongPair + endLatLongPair
+	url.StationLatLonPair = startLatLongPair + endLatLongPair
+	url.Url = baseURL + startLatLongPair + endLatLongPair
 
 	return url, err
 }
-
-
