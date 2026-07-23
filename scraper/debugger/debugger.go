@@ -1,12 +1,13 @@
-package main
+package debugger
 
 import (
 	"fmt"
-	"backend/rod_utils"
+
+    "backend/types"
 
 )
 
-func PrintPageDataWrapper(wrapper PageDataWrapper) {
+func PrintPageDataWrapper(wrapper types.PageDataWrapper) {
     fmt.Println("=====SEARCH RESULTS=====")
     fmt.Printf(" Route:    %s  -->  %s\n", wrapper.StartStation, wrapper.EndStation)
     fmt.Printf(" Fetched:  %s\n", wrapper.RetrievalTime.Format("2006-01-02 15:04:05"))
@@ -24,7 +25,7 @@ func PrintPageDataWrapper(wrapper PageDataWrapper) {
     fmt.Println("========================")
 }
 
-func printPageData(data *rod_utils.PageData) {
+func printPageData(data *types.PageData) {
 	fmt.Println("===== pageData =====")
 	fmt.Println("Duration:        ", data.Duration)
 	fmt.Println("Start Time:      ", data.StartTime)
@@ -40,7 +41,7 @@ func printPageData(data *rod_utils.PageData) {
 	fmt.Println("====================")
 }
 
-func stopCodeUntilPres(){
+func StopCodeUntilPress(){
 	var cont string
 	fmt.Print("Press any button to contionue: ")
 	fmt.Scanln(cont)
