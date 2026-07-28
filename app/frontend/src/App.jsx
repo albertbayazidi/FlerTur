@@ -26,7 +26,7 @@ function App() {
 
     try {
       const response = await fetch(
-        `http://localhost:3001/api/search?from=${encodeURIComponent(searchFrom)}&to=${encodeURIComponent(searchTo)}`,
+        `/api/search?from=${encodeURIComponent(searchFrom)}&to=${encodeURIComponent(searchTo)}`,
       );
 
       if (!response.ok) throw new Error("Nooooooo :(");
@@ -43,7 +43,7 @@ function App() {
   const renderContent = () => {
     if (loading) return <Loading />;
     if (hasSearched && results) return <Results results={results} />;
-    
+
     return <Info onRouteSelect={handleRouteSelect} />;
   };
 
@@ -51,13 +51,7 @@ function App() {
     <div className="flex min-h-screen flex-col">
       <Navbar />
 
-      <SearchBarArea 
-        onSearch={executeSearch} 
-        from={from} 
-        setFrom={setFrom} 
-        to={to} 
-        setTo={setTo} 
-      />
+      <SearchBarArea onSearch={executeSearch} from={from} setFrom={setFrom} to={to} setTo={setTo} />
 
       {renderContent()}
 

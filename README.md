@@ -1,6 +1,6 @@
 <p align="center">
 
-  <img src="images/dark_logo.png">
+  <img src="docs/images/dark_logo.png">
   
 </p>
 
@@ -29,12 +29,19 @@ hos EnTUR
 
 ## DEV
 
-For å sette up tjenesten lokalt bruk man følgende koomandoene.
+For å sette up tjenesten lokalt bruk man følgende koomandoene fra root.
 
 ```bash
-cd frontend && bun run dev && cd ..
-docker compose up -d # will take some time before results start showing up
+docker compose up flertur_db -d
+bun run --watch app/api/server.ts
+cd app/frontend && bun run dev
 ```
+
+For å kjøre scraperen i debug mode bruk følgende koomando fra root:
+```bash
+go -C app/scraper run . -rod="show,slow=1s,trace"
+```
+
 
 ### Oppgaver
 - Gjør nettsiden skærmleser vennlig

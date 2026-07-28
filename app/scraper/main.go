@@ -55,25 +55,19 @@ func mainProssesSave() {
 	tomorrow := now.AddDate(0, 0, 1)
 	currentDate := tomorrow.Format("2006-01-02")
 
-	limit := maxStaions + 1
-	if limit > len(routes) {
-		limit = len(routes)
-	}
+	limit := min(maxStaions + 1, len(routes))
 	activeRoutes := routes[:limit]
 
 	chunkSize := (len(activeRoutes) + numThreads - 1) / numThreads
 	var wg sync.WaitGroup
 	resultChan := make(chan types.PageDataWrapper, len(activeRoutes)*2)
 
-	for i := 0; i < numThreads; i++ {
+	for i := range numThreads {
 		startIdx := i * chunkSize
 		if startIdx >= len(activeRoutes) {
 			break
 		}
-		endIdx := startIdx + chunkSize
-		if endIdx > len(activeRoutes) {
-			endIdx = len(activeRoutes)
-		}
+		endIdx := min(startIdx + chunkSize, len(activeRoutes))
 
 		wg.Add(1)
 		go func(start, end int) {

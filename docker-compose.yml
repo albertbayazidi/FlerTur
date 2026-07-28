@@ -20,29 +20,18 @@ services:
 
   flertur_api:
     container_name: flertur_api
-    build: ./api  
+    build:
+      context: ./app
+      dockerfile: api/Dockerfile
     ports:
-      - "3005:3005" 
+      - "3005:3005"
     networks:
       - default
     depends_on:
       flertur_db:
         condition: service_healthy
     environment:
-      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@flertur_db:${POSTGRES_PORT}/${POSTGRES_DB}
-    volumes:
-      - ./api:/app
-      - /app/node_modules
-
-  flertur_frontend:
-    container_name: flertur_frontend
-    build: ./frontend
-    user: "1000:1000"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-      - /var/www/flertur:/app/dist
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@flertur_db:5432/${POSTGRES_DB}
 
 volumes:
   postgres_data:
-

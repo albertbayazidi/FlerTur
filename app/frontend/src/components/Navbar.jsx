@@ -1,4 +1,4 @@
-import { Github } from "lucide-react";
+import GithubIcon from "./custom_svg/GithubIcon";
 
 function Navbar() {
   return (
@@ -14,7 +14,7 @@ function Navbar() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Github />
+            <GithubIcon />
           </a>
         </div>
       </div>
