@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"strconv"
 	"sync"
 	"time"
 
@@ -9,13 +11,30 @@ import (
 	"backend/types"
 
 	"github.com/go-rod/rod"
+	"github.com/go-rod/rod/lib/launcher"
 )
 
-var mu sync.Mutex
-var maxDay = 6
-var maxStaions = 8
-var numThreads = 2
-var restTime = 30
+var maxDay int
+var maxStations int
+var numThreads int
+var restTime int
+
+func getEnvAsInt(name string, defaultValue int) int {
+	valStr := os.Getenv(name)
+	if valStr != "" {
+		if val, err := strconv.Atoi(valStr); err == nil {
+			return val
+		}
+	}
+	return defaultValue
+}
+
+func init() {
+	maxDay = getEnvAsInt("MAX_DAY", 6)
+	maxStations = getEnvAsInt("MAX_STATIONS", 8)
+	numThreads = getEnvAsInt("NUM_THREADS", 2)
+	restTime = getEnvAsInt("REST_TIME", 30)
+}
 
 func mainProsses(browser *rod.Browser, startStation string, endStation string, currentDate string) types.PageDataWrapper {
 	var pageDataResults []types.PageData
@@ -55,7 +74,7 @@ func mainProssesSave() {
 	tomorrow := now.AddDate(0, 0, 1)
 	currentDate := tomorrow.Format("2006-01-02")
 
-	limit := min(maxStaions + 1, len(routes))
+	limit := min(maxStations+1, len(routes))
 	activeRoutes := routes[:limit]
 
 	chunkSize := (len(activeRoutes) + numThreads - 1) / numThreads
@@ -67,12 +86,20 @@ func mainProssesSave() {
 		if startIdx >= len(activeRoutes) {
 			break
 		}
-		endIdx := min(startIdx + chunkSize, len(activeRoutes))
+		endIdx := min(startIdx+chunkSize, len(activeRoutes))
 
 		wg.Add(1)
 		go func(start, end int) {
 			defer wg.Done()
-			browser := rod.New().MustConnect()
+
+			binPath := os.Getenv("ROD_BROWSER_BIN")
+			l := launcher.New()
+			if binPath != "" {
+				l = l.Bin(binPath)
+			}
+			u := l.Set("no-sandbox").MustLaunch()
+
+			browser := rod.New().ControlURL(u).MustConnect()
 			defer browser.MustClose()
 
 			for j := start; j < end; j++ {
@@ -108,7 +135,7 @@ func mainProssesSave() {
 }
 
 func main() {
-	interval := 30 * time.Minute
+	interval := time.Duration(restTime) * time.Minute
 
 	for {
 		start := time.Now()
@@ -123,7 +150,7 @@ func main() {
 			fmt.Printf("Waiting for %v before next run...\n", wait)
 			time.Sleep(wait)
 		} else {
-			fmt.Println("Process took longer than 30 minutes. Restarting immediately.")
+			fmt.Println("Process took longer than interval. Restarting immediately.")
 		}
 	}
 }
