@@ -55,7 +55,7 @@ function App() {
 
       {renderContent()}
 
-      <img src="/footer_art.png" className="mt-auto h-auto w-auto object-contain md:h-auto md:w-full" alt="" />
+      <img src="/footer_art.webp" className="mt-auto h-auto w-auto object-contain md:h-auto md:w-full" alt="" />
     </div>
   );
 }

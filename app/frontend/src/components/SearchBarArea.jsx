@@ -66,7 +66,7 @@ function SearchBarArea({ from, setFrom, to, setTo, onSearch }) {
         <div></div>
       </div>
 
-      <img src="/search_bar_kunst_remix.png" className="w-full pt-1 object-contain" alt="" />
+      <img fetchPriority="high" src="/search_bar_kunst_remix.webp" className="w-full pt-1 object-contain" alt="" />
     </div>
   );
 }
