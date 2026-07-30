@@ -8,6 +8,7 @@
     "preview": "bunx vite preview --port 1234"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.3.3",
     "baseline-browser-mapping": "^2.11.7",
     "caniuse-lite": "^1.0.30001806",
     "lucide-react": "^1.28.0",
@@ -18,8 +19,6 @@
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react-swc": "^4.3.2",
-    "autoprefixer": "^10.5.4",
-    "postcss": "^8.5.25",
     "tailwindcss": "^4.3.3",
     "vite": "^8.1.5"
   }

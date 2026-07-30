@@ -15,7 +15,7 @@ function SearchBarArea({ from, setFrom, to, setTo, onSearch }) {
     <div className="bg-second">
       <div className="mx-4 grid gap-4 pt-6 sm:mx-10 sm:grid-cols-3 sm:items-center">
         <select
-          className="w-full rounded px-3 py-3 text-primary focus:outline-none"
+          className="w-full bg-white rounded px-3 py-3 text-primary focus:outline-none"
           placeholder="Fra"
           value={from}
           onChange={(e) => setFrom(e.target.value)}
@@ -37,7 +37,7 @@ function SearchBarArea({ from, setFrom, to, setTo, onSearch }) {
         </button>
 
         <select
-          className="w-full rounded px-3 py-3 text-primary focus:outline-none"
+          className="w-full bg-white rounded px-3 py-3 text-primary focus:outline-none"
           placeholder="Til"
           value={to}
           onChange={(e) => setTo(e.target.value)}
