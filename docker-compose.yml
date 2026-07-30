@@ -33,22 +33,5 @@ services:
     environment:
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@flertur_db:5432/${POSTGRES_DB}
 
-  flertur_scraper:
-    container_name: flertur_scraper
-    build:
-      context: ./app/scraper
-      dockerfile: Dockerfile
-    networks:
-      - default
-    depends_on:
-      flertur_db:
-        condition: service_healthy
-    environment:
-      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@flertur_db:5432/${POSTGRES_DB}?sslmode=disable
-      MAX_DAY: "6"
-      MAX_STATIONS: "8"
-      NUM_THREADS: "2"
-      REST_TIME: "30"
-
 volumes:
   postgres_data:

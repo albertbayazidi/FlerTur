@@ -21,10 +21,7 @@ const routes1 = [
         <h1 className="mb-8 text-3xl text-center font-bold text-white">Info:</h1>
 
         <p className="text-center text-white ">
-          <strong>NB!</strong> Denne nettsiden er under konstruksjon. Tallene oppdateres én gang hvert 30. minutt. Det
-          betyr at priser og tilgjengelighet i enkelte tilfeller kan avvike noe fra sanntidsinformasjonen hos EnTUR.
-          Dataen er hentet med en GO-crawleren/scraperen.
-        </p>
+          <strong>NB!</strong> Denne nettsiden er under konstruksjon. Den er ment som en demo nettside.</p>
 
         <p className="text-center text-white">
           Denne nettsiden prøver å finne de billigste billettprisene en uke fram i tid. Jeg tjener ikke noe på salget av
